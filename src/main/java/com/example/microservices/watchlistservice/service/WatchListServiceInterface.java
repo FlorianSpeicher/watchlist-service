@@ -33,6 +33,6 @@ public interface WatchListServiceInterface {
     void deleteUserByID(int id);
 
     String generateToken();
-    String validateToken(String token);
+    String validateAndUpdateToken(String token);
     void invalidateToken(String user);
 }

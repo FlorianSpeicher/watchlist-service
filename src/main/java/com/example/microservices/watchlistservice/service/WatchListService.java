@@ -155,7 +155,7 @@ public class WatchListService implements WatchListServiceInterface{
     }
 
     @Override
-    public String validateToken(String token) {
+    public String validateAndUpdateToken(String token) {
         return webClientAuth.method(HttpMethod.GET).uri("/token/validate").retrieve().bodyToMono(String.class).block();
     }
 
