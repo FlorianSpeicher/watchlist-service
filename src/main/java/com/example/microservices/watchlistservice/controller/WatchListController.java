@@ -1,22 +1,21 @@
 package com.example.microservices.watchlistservice.controller;
 
 import com.example.microservices.watchlistservice.service.WatchListService;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/watchlist")
-public class WatchlistController {
+public class WatchListController {
 
     private WatchListService watchListService;
 
-    public WatchlistController(WatchListService watchListService){
+    public WatchListController(WatchListService watchListService){
         this.watchListService = watchListService;
     }
 
    @GetMapping("/listAllWatchLists")
     public String listAllWatchLists() {
+
     }
 
     @GetMapping("/listWatchListByID")
