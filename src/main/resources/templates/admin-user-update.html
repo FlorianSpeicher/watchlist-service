@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>Watchlist-Application</title>
+</head>
+<body>
+<div class="container">
+    <hr>
+    <h3>Watchlist-Application</h3>
+    <hr>
+
+    <p class="h4 mb-4">Updating a User</p>
+
+    <a th:href="@{/watchlist/adminUserList}"
+       class="btn btn-secondary btn-sm mb-3">
+        Back
+    </a>
+    <a th:href="@{/watchlist/showAdminPage}"
+       class="btn btn-secondary btn-sm mb-3">
+        Back to admin page
+    </a>
+
+    <form action="#" th:action="@{/watchlist/adminUpdateUser(userId=${user.id})}"
+          th:object="${user}" method="post">
+        <!-- Vorausgefüllte Daten einfügen -->
+        <input type="hidden" th:field="*{id}"/>
+        <input type="text" th:field="*{userName}"
+               class="form-control mb-4 w-25" placeholder="User name">
+        <input type="text" th:field="*{firstName}"
+               class="form-control mb-4 w-25" placeholder="First Name">
+        <input type="text" th:field="*{lastName}"
+               class="form-control mb-4 w-25" placeholder="Last name">
+        <input type="text" th:field="*{age}"
+               class="form-control mb-4 w-25" placeholder="Age">
+        <input type="text" th:field="*{email}"
+               class="form-control mb-4 w-25" placeholder="Email">
+        <button type="submit" class="btn btn-warning col-2">Save</button>
+    </form>
+</div>
+</body>
+</html>

@@ -44,25 +44,17 @@
                    class="form-control mb-4 w-25" placeholder="Last name">
             <input type="text" th:field="*{userName}"
                    class="form-control mb-4 w-25" placeholder="User name">
+            <input type="text" th:field="*{age}"
+                   class="form-control mb-4 w-25" placeholder="Age">
             <input type="text" th:field="*{email}"
                    class="form-control mb-4 w-25" placeholder="Email">
             <input type="password" th:field="*{password}"
                    class="form-control mb-4 w-25" placeholder="Password">
 
             <button type="submit" class="btn btn-info col-2">Save</button>
-
-
         </form>
-
         <hr>
         <a th:href="@{/watchlist/login}">Back to login page</a>
-
     </div>
-
-
-
-
-
-
 </body>
 </html>

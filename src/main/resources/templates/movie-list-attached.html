@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>Watchlist-App</title>
+</head>
+
+<body>
+
+<div class="container">
+    <hr>
+    <h3>Watchlist-Application</h3>
+    <hr>
+    <a th:href="@{/watchlist/editWatchList(watchListId=${watchList.id})}"
+       class="btn btn-primary btn-sm mb-3">
+        Back
+    </a>
+    <a th:href="@{/watchlist/listAll}"
+       class="btn btn-primary btn-sm mb-3">
+        Home
+    </a>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Title</th>
+            <th>Length</th>
+            <th>Episodes</th>
+            <th>Age Restriction</th>
+            <th>Regisseur</th>
+            <th>Reviews</th>
+            <th>Actors</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="movies : ${movies}">
+
+            <td th:text="${movies.title}" th:href="@{/watchlist/listSingleMovieById(movieId=${movies.id})}" />
+            <td th:text="${movies.length}" />
+            <td th:text="${movies.episodes}" />
+            <td th:text="${movies.ageRestriction}" />
+            <td th:text="${movies.regisseur}" />
+            <td th:text="${movies.reviews}" />
+            <td th:text="${movies.actors}" />
+            <td>
+                <a th:href="@{/watchlist/addMovieToWatchList(watchListId=${watchList.id}, movieId=${movies.id})}"
+                   class="btn btn-primary btn-sm">
+                    Add</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+</html>
+
+
+

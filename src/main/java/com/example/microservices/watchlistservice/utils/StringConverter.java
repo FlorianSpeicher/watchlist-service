@@ -17,7 +17,7 @@ public abstract class StringConverter {
 
     //? methode relevant?
     public static String toWatchList(String name, List<Integer> idList){
-        String base = "{\"name\":\"" + name + "\", \"movies\":["
+        String base = "{\"name\":\"" + name + "\", \"movies\":[";
         return null;
     }
 
