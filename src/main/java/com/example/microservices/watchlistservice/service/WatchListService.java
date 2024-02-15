@@ -1,20 +1,19 @@
 package com.example.microservices.watchlistservice.service;
 
+import com.example.microservices.watchlistservice.dto.Actor;
+import com.example.microservices.watchlistservice.dto.Movie;
+import com.example.microservices.watchlistservice.dto.Regisseur;
 import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.entity.WatchList;
 import com.example.microservices.watchlistservice.repositories.RoleRepository;
 import com.example.microservices.watchlistservice.repositories.UserRepository;
 import com.example.microservices.watchlistservice.repositories.WatchListRepository;
-import com.example.microservices.watchlistservice.utils.StringConverter;
+import static com.example.microservices.watchlistservice.utils.StringConverter.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,6 +37,112 @@ public class WatchListService implements WatchListServiceInterface{
     }
 
     @Override
+    public String generateToken() {
+        return null;
+    }
+
+    @Override
+    public String validateAndUpdateToken(String token) {
+        return null;
+    }
+
+    @Override
+    public void invalidateToken(String user) {
+
+    }
+
+    @Override
+    public List<Actor> findAllActors() {
+        return stringToActorList(webClientMovie.get().uri("/list/actors").retrieve().bodyToMono(String.class).block());
+    }
+
+    @Override
+    public List<Regisseur> findAllRegisseurs() {
+        return stringToRegisseurList(webClientMovie.get().uri("/list/regisseurs").retrieve().bodyToMono(String.class).block());
+    }
+
+    @Override
+    public void saveUser(User currentUser) {
+        userRepository.save(currentUser);
+    }
+
+    @Override
+    public Movie findMovieById(int id) {
+        return stringToMovie(webClientMovie.get().uri("/list/{id}", id).retrieve().bodyToMono(String.class).block());
+    }
+
+    @Override
+    public WatchList findWatchListById(int watchListId) {
+        Optional<WatchList> watchList = watchListRepository.findById(watchListId);
+        return watchList.orElse(null);
+    }
+
+    @Override
+    public void saveWatchList(WatchList watchList) {
+        watchListRepository.save(watchList);
+    }
+
+    @Override
+    public void saveMovie(Movie movie) {
+
+    }
+
+    @Override
+    public Regisseur findRegisseurById(int id) {
+        return null;
+    }
+
+    @Override
+    public Actor findActorById(int id) {
+        return null;
+    }
+
+    @Override
+    public void deleteUser(User currentUser) {
+        userRepository.deleteById(currentUser.getId());
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void addCommentToMovie(int id, String comment) {
+
+    }
+
+
+    /*
+    public void deleteMovieFromWatchlistById(int watchListId, int movieId){
+        WatchList watchList = findWatchListByID(watchListId);
+        List<String> allMoviesOfList = findAllMoviesOfWatchListById(watchListId);
+        String movie = findMovieByID(movieId);
+        allMoviesOfList.remove(movie);
+        watchList.setMovies(allMoviesOfList);
+        watchListRepository.save(watchList);
+    }
+
+    public List<WatchList> findAllWatchListsByUser(User user){
+        return findUserById(user.getId()).getWatchLists();
+
+    }
+
+    public User findUserById(int id){
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(null);
+    }
+
+    public List<Movie> findAllMovies(){
+       return toMovieStringList(webClientMovie.get().uri("/list").retrieve().bodyToMono(String.class).block());
+    }
+
+    public List<String> findAllMovieNames(){
+        return toNameList(webClientMovie.get().uri("/list/title").retrieve().bodyToMono(String.class).block());
+    }
+
+    /*
+    @Override
     public List<WatchList> findAllWatchLists() {
         return watchListRepository.findAll();
     }
@@ -48,17 +153,20 @@ public class WatchListService implements WatchListServiceInterface{
         return StringConverter.toStringList(result);
     }
 
+
+    public List<String> findAllMoviesOfWatchListById(int id){
+        return findWatchListByID(id).getMovies();
+    }
+
+
+
+     */ /*
     @Override
     public WatchList findWatchListByID(int id) {
         Optional<WatchList> watchList = watchListRepository.findById(id);
-        WatchList watchList1 = null;
-        if(watchList.isPresent()){
-            watchList1 = watchList.get();
-            return watchList1;
-        } else {
-            return null;
-        }
+        return watchList.orElse(null);
     }
+
 
     @Override
     public String findMovieByID(int id) {
@@ -163,4 +271,6 @@ public class WatchListService implements WatchListServiceInterface{
     public void invalidateToken(String user) {
         webClientAuth.method(HttpMethod.POST).uri("/token/invalidate").retrieve();
     }
+
+     */
 }
