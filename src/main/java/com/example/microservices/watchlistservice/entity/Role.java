@@ -9,15 +9,15 @@ import java.util.Collection;
 @Table(name = "roles")
 public class Role {
     @Id
-    @Column(name = "id")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToMany(mappedBy = "roles")
-    private ArrayList<User> users;
-
     @Column(name = "role")
     private Roles role;
+
+    @OneToOne(mappedBy = "roles")
+    private User users;
 
     public int getId() {
         return id;
@@ -35,11 +35,11 @@ public class Role {
         this.role = role;
     }
 
-    public ArrayList<User> getUsers() {
+    public User getUsers() {
         return users;
     }
 
-    public void setUsers(ArrayList<User> users) {
+    public void setUsers(User users) {
         this.users = users;
     }
 

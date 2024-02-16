@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-    <title>Watchlist-App</title>
+    <title>Admin-Access</title>
 </head>
 
 <body>
@@ -19,7 +19,7 @@
     <h3>Watchlist-Application</h3>
     <hr>
     <h5>List of all users with admin rights</h5>
-    <a th:href="@{/watchlist/showAdminPage}"
+    <a th:href="@{/admin/showAdminPage}"
        class="btn btn-secondary btn-sm mb-3">
         Back to admin page
     </a>
@@ -37,18 +37,18 @@
         </thead>
 
         <tbody>
-        <tr th:each="users : ${users}">
+        <tr th:each="tempUser : ${users}">
 
-            <td th:text="${users.username}"/>
-            <td th:text="${users.firstName}" />
-            <td th:text="${users.lastName}" />
-            <td th:text="${users.age}" />
-            <td th:text="${users.email}" />
+            <td th:text="${tempUser.username}"/>
+            <td th:text="${tempUser.firstName}" />
+            <td th:text="${tempUser.lastName}" />
+            <td th:text="${tempUser.age}" />
+            <td th:text="${tempUser.email}" />
             <td>
-                <a th:href="@{/watchlist/adminUpdateUser(userId=${users.id})}"
+                <a th:href="@{/admin/adminShowUpdateUser(userId=${tempUser.id})}"
                    class="btn btn-warning btn-sm">
                     Update</a>
-                <a th:href="@{/watchlist/adminDeleteUser(userId=${users.id})}"
+                <a th:href="@{/watchlist/adminDeleteUser(userId=${tempUser.id})}"
                    class="btn btn-danger btn-sm">
                     Delete</a>
             </td>

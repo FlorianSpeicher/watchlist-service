@@ -23,6 +23,17 @@ public abstract class StringConverter {
    }
 
    public static String stringToCommentString(String input){
-       return null;
+       return "null";
    }
+
+   public static List<Movie> stringToMovieList(String input){return null;}
+
+   public static String movieToString(Movie movie){
+       return "";
+   }
+
+   public static Regisseur stringToRegisseur(String input){return new Regisseur("asd", "sad");}
+
+    public static Actor stringToActor(String input){return new Actor("", "");}
+
 }

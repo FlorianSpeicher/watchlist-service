@@ -39,4 +39,22 @@ public interface WatchListServiceInterface {
     List<User> findAllUsers();
 
     void addCommentToMovie(int id, String comment);
+
+    User findUserById(int id);
+
+    List<Movie> findAllMovies();
+
+    List<WatchList> findAllWatchListsByUser(User currentUser);
+
+    void deleteMovieById(int id);
+
+    void deleteUserById(int id);
+
+    Object getMoviesByActorId(int id);
+
+    Object getMoviesByRegisseurId(int id);
+
+    void deleteMovieFromWatchList(int watchListId, int movieId);
+
+    void deleteWatchList(int id);
 }

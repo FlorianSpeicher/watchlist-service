@@ -8,12 +8,14 @@ import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.entity.WatchList;
 import com.example.microservices.watchlistservice.service.WatchListService;
 import com.example.microservices.watchlistservice.utils.StringConverter;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.boot.Banner;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/watchlist")
@@ -23,6 +25,15 @@ public class WatchListController extends BaseController{
 
     public WatchListController(WatchListService watchListService){
         this.watchListService = watchListService;
+    }
+
+    @Before("execution(* com.example.microservices.watchlistservice.controller.WatchListController.*")
+    public void tokenSys(){
+        String token = getCurrentUser().getToken();
+        getCurrentUser().setToken(watchListService.validateAndUpdateToken(getCurrentUser().getToken()));
+        if (Objects.equals(getCurrentUser().getToken(), "NonValidToken")){
+            LoginController.accessDeniedPage();
+        }
     }
 
     @GetMapping("/showHome")
@@ -49,7 +60,7 @@ public class WatchListController extends BaseController{
     @GetMapping("/showRegisseurList")
     public String showRegisseurList(Model model){
         List<Regisseur> allRegisseur = watchListService.findAllRegisseurs();
-        model.addAttribute("regisseur", allRegisseur);
+        model.addAttribute("regisseurs", allRegisseur);
         return "/regisseur/regisseur-list";
     }
 
@@ -62,14 +73,28 @@ public class WatchListController extends BaseController{
     public String addingWatchListToUser(@RequestParam("watchList") WatchList watchList, Model model){
         getCurrentUser().addWatchLists(watchList);
         watchListService.saveUser(getCurrentUser());
-        return "redirect:/watchlist/showSingleWatchList";
+        //TODO schauen, ob das so geht um die id mitzugeben
+        return "redirect:/watchlist/showSingleWatchList" + watchList.getId();
     }
 
     @GetMapping("/showSingleWatchList")
     public String showSingleWatchList(@RequestParam("watchListId") int id, Model model){
-        WatchList watchList = watchListService.findWatchListByID(id);
+        WatchList watchList = watchListService.findWatchListById(id);
         model.addAttribute("watchList", watchList);
         return "watchlist/single-watchlist";
+    }
+
+    @GetMapping("/deleteMovieFromWatchList")
+    public String deleteMovieFromWatchList(@RequestParam("watchListId") int watchListId, @RequestParam("movieId") int movieId, Model model){
+        //TODO Problem siehe 2 Methoden obendrüber
+        watchListService.deleteMovieFromWatchList(watchListId, movieId);
+        return "redirect:/watchlist/showSingleWatchList" + watchListId;
+    }
+
+    @GetMapping("/deleteWatchList")
+    public String deleteWatchList(@RequestParam("watchListId") int id, Model model){
+        watchListService.deleteWatchList(id);
+        return "redirect:/watchlist/showHome";
     }
 
     @GetMapping("/showMovieListToAddWatchList")
@@ -121,6 +146,7 @@ public class WatchListController extends BaseController{
     public String showSingleRegisseur(@RequestParam("regisseurId") int id, Model model){
         Regisseur regisseur = watchListService.findRegisseurById(id);
         model.addAttribute("regisseur", regisseur);
+        model.addAttribute("movies", watchListService.getMoviesByRegisseurId(id));
         return "regisseur/regisseur";
     }
 
@@ -128,6 +154,7 @@ public class WatchListController extends BaseController{
     public String showSingleActor(@RequestParam("actorId") int id, Model model){
         Actor actor = watchListService.findActorById(id);
         model.addAttribute("actor", actor);
+        model.addAttribute("movies", watchListService.getMoviesByActorId(id));
         return "actor/actor";
     }
 

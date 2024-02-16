@@ -18,7 +18,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "user_id")
     private int id;
 
     @Column(name = "first_name")
@@ -69,7 +69,10 @@ public class User {
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+    private Role roles;
+
+    @Column(name = "active")
+    private int active;
 
 
     public int getId() {
@@ -147,19 +150,19 @@ public class User {
         this.token = token;
     }
 
-    public Collection<Role> getRoles() {
+    public Role getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Role roles) {
         this.roles = roles;
     }
 
     public void addRoles(Role role){
-        this.roles.add(role);
+        this.roles = role;
     }
 
-    public User(String firstName, String lastName, String userName, String password, int age, String email, String token, List<WatchList> watchLists, Collection<Role> roles) {
+    public User(String firstName, String lastName, String userName, String password, int age, String email, String token, List<WatchList> watchLists, Role roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -168,10 +171,10 @@ public class User {
         this.email = email;
         this.token = token;
         this.watchLists = watchLists;
-        this.roles= roles;
+        this.roles = roles;
     }
 
     public User(){
-        this("unknown", "unknown", "unknown", "0000", 0, "unknown@unknown.com", null , new ArrayList<>(), new ArrayList<Role>());
+        this("unknown", "unknown", "unknown", "0000", 0, "unknown@unknown.com", null , new ArrayList<>(), new Role());
     }
 }

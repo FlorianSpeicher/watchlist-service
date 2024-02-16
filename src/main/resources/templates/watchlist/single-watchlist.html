@@ -18,18 +18,18 @@
 	<hr>
 	<h3>Watchlist-Application</h3>
 	<hr>
-	<h2 th:each="watchlist : ${watchlist}"
-		th:text="${watchlist.name}"></h2>
+	<h2 th:text="${watchlist.name}"></h2>
 
 	<hr>
-	<a th:href="@{/watchlist/addMovieToWatchlistAttached}"
-		class="btn btn-primary btn-sm mb-3">
+	<a th:href="@{/watchlist/showMovieListToAddWatchList(watchListId=${watchlist.id})}"
+		class="btn btn-secondary btn-sm">
 		Add Movie
 	</a>
 	<a th:href="@{/watchlist/listAll}"
-	   class="btn btn-primary btn-sm mb-3">
+	   class="btn btn-secondary btn-sm">
 		Home
 	</a>
+	<hr>
 
 
 	<table class="table table-bordered table-striped">
@@ -47,17 +47,17 @@
 		</thead>
 		
 		<tbody>
-			<tr th:each="movies : ${movies}">
+			<tr th:each="tempMovie : ${watchList.movies}">
 			
-				<td th:text="${movies.title}" />
-				<td th:text="${movies.length}" />
-				<td th:text="${movies.episodes}" />
-				<td th:text="${movies.ageRestriction}" />
-				<td th:text="${movies.regisseur}" />
-				<td th:text="${movies.reviews}" />
-				<td th:text="${movies.actors}" />
+				<td th:text="${tempMovie.title}" />
+				<td th:text="${tempMovie.length}" />
+				<td th:text="${tempMovie.episodes}" />
+				<td th:text="${tempMovie.ageRestriction}" />
+				<td th:text="${tempMovie.regisseur}" />
+				<td th:text="${tempMovie.reviews}" />
+				<td th:text="${tempMovie.actors}" />
 				<td>
-					<a th:href="@{/watchlist/deleteMovieById(movieId=${movie.id})}"
+					<a th:href="@{/watchlist/deleteMovieFromWatchList(watchListId=${watchList.id}, movieId=${tempMovie.id})}"
 					   class="btn btn-danger btn-sm"
 						onclick="if(!(confirm('Are you sure you want to delete this movie?')))return false" >
 						Delete</a>

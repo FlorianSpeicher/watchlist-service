@@ -1,9 +1,10 @@
 package com.example.microservices.watchlistservice.controller;
 
 import com.example.microservices.watchlistservice.dto.Movie;
-import com.example.microservices.watchlistservice.entity.Roles;
+import com.example.microservices.watchlistservice.entity.Role;
 import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.service.WatchListService;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
+
+import static com.example.microservices.watchlistservice.entity.Roles.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -18,10 +22,21 @@ public class AdminController extends BaseController{
 
     private WatchListService watchListService;
 
+    @Before("execution(* com.example.microservices.watchlistservice.controller.AdminController.*")
+    public void tokenSys(){
+        getCurrentUser().setToken(watchListService.validateAndUpdateToken(getCurrentUser().getToken()));
+        if (Objects.equals(getCurrentUser().getToken(), "NonValidToken")){
+            LoginController.accessDeniedPage();
+        }
+    }
+
     @GetMapping("/showAdminPage")
     public String showAdminPage(Model model){
-        //TODO Grund finden, warum das ganze null sein kann
-        if (getCurrentUser().getRoles().contains(Roles.ADMIN)){
+        Role role = new Role();
+        role.setRole(ADMIN);
+        User user = new User();
+        user.setRoles(role);
+        if (getCurrentUser().getRoles().equals(user.getRoles())){
             return "/admin/admin-page";
         }
         return "redirect:/watchlist/showHome";
@@ -38,7 +53,7 @@ public class AdminController extends BaseController{
     public String adminShowMovieList(Model model){
         List<Movie> allMovies = watchListService.findAllMovies();
         model.addAttribute("movies", allMovies);
-        return "/admin/admin-movies";
+        return "/admin/admin-movie";
     }
 
     @GetMapping("/adminShowUpdateUser")
@@ -65,5 +80,17 @@ public class AdminController extends BaseController{
     public String adminUpdateMovie(@RequestParam("movie") Movie movie, Model model){
         watchListService.saveMovie(movie);
         return "redirect:/admin/adminShowMovieList";
+    }
+
+    @GetMapping("/adminDeleteMovie")
+    public String adminDeleteMovie(@RequestParam("movieId") int id){
+        watchListService.deleteMovieById(id);
+        return "redirect:/admin/adminShowMovieList";
+    }
+
+    @GetMapping("/adminDeleteUser")
+    public String adminDeleteUser(@RequestParam("userId") int id){
+        watchListService.deleteUserById(id);
+        return "redirect:/admin/adminShowUserList";
     }
 }

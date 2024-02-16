@@ -20,21 +20,31 @@ public class LoginController extends BaseController{
         this.watchListService = watchListService;
     }
 
+
     @GetMapping("/addUser")
-    public String addUser(Model model){
-        //TODO schauen, wie das Registrieren gestaltet werden muss
-        model.addAttribute("user", user);
+    public String addUser(@RequestParam("user") User user, Model model){
         watchListService.saveUser(user);
-        return "registration";
+        return "login/registration";
     }
 
     @GetMapping("/login")
     public String login(){
-        return "login";
+        getCurrentUser().setToken(watchListService.generateToken());
+        return "login/login";
     }
 
     @GetMapping("/access-denied")
-    public String accessDeniedPage(){
-        return "access-denied";
+    public static String accessDeniedPage(){
+        return "login/access-denied";
     }
+
+
+    @GetMapping("/authenticateUser")
+    public String authenticateUser(@RequestParam("user") User user){
+        //TODO
+        return "";
+    }
+
 }
+
+

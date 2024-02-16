@@ -19,26 +19,30 @@
 	<hr>
 	<h3>Watchlist-Application</h3>
 	<form action="#" th:action="@{/logout}" method=post>
-		<a class="btn btn-primary btn-sm mb-3">Logout</a>
+		<a class="btn btn-secondary btn-sm">Logout</a>
 	</form>
+	<hr>
 	<div sec:authorize="hasRole('ADMIN')">
+
 	<a th:href="@{/watchlist/showAdminPage}"
-	   class="btn btn-primary btn-sm mb-3">
+	   class="btn btn-warning btn-sm">
 		Admin Page
 	</a>
+		<hr>
 	</div>
 
 	<span sec:authentication="principal.username"></span>
 	<span sec:authentication="principal.authorities"></span>
 	<hr>
 	<a th:href="@{/watchlist/addWatchList}"
-		class="btn btn-primary btn-sm mb-3">
+		class="btn btn-secondary btn-sm">
 		Add Watchlist
 	</a>
 	<a th:href="@{/watchlist/listAllMovies}"
-	   class="btn btn-primary btn-sm mb-3">
+	   class="btn btn-secondary btn-sm">
 		Show all movies
 	</a>
+	<hr>
 
 	<table class="table table-bordered table-striped">
 		<thead class="table-dark">
@@ -54,9 +58,9 @@
 				<td th:text="${tempWatchList.name}" />
 
 				<td>
-					<a th:href="@{/watchlist/editWatchList(watchlistId=${watchlist.id})}"
+					<a th:href="@{/watchlist/showSingleWatchList(watchlistId=${tempWatchList.id})}"
 					class="btn btn-info btn-sm">Edit</a>
-					<a th:href="@{/watchlist/deleteWatchList(watchListId=${watchlist.id})}"
+					<a th:href="@{/watchlist/deleteWatchList(watchListId=${tempWatchList.id})}"
 					   class="btn btn-danger btn-sm"
 						onclick="if(!(confirm('Are you sure you want to delete this watchlist?')))return false" >
 						Delete</a>
@@ -64,8 +68,14 @@
 			</tr>
 		</tbody>		
 	</table>
-	
+
+	<form action="#" th:action="@{/deleteAccount}" method=get>
+		<a class="btn btn-warning btn-sm">Delete Account</a>
+	</form>
+
 </div>
+
+
 	
 </body>
 </html>

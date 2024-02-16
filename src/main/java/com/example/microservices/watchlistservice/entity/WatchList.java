@@ -20,6 +20,8 @@ public class WatchList {
     @Column(name = "movies")
     private List<Movie> movies;
 
+    private String userName;
+
 
     public int getId() {
         return id;
@@ -47,5 +49,13 @@ public class WatchList {
 
     public void addMovie(Movie movie){
         this.movies.add(movie);
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

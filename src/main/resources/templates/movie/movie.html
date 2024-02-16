@@ -19,22 +19,23 @@
     <hr>
     <h3>Watchlist-Application</h3>
     <hr>
-    <a th:href="@{/watchlist/commentWrite(movieId=${movie.id})}"
-           class="btn btn-primary btn-sm mb-3">
+    <a th:href="@{/watchlist/showCommentAddPage(movieId=${movie.id})}"
+           class="btn btn-secondary btn-sm">
             Write a comment
     </a>
-    <a th:href="@{/watchlist/addMovieToWatchListIndep(movieId=${movie.id})}"
-       class="btn btn-primary btn-sm mb-3">
+    <a th:href="@{/watchlist/showMovieAddPage(movieId=${movie.id})}"
+       class="btn btn-secondary btn-sm">
         Add to watchlist
     </a>
-    <a th:href="@{/watchlist/listAllMovies}"
-       class="btn btn-primary btn-sm mb-3">
+    <a th:href="@{/watchlist/showListOfAllMovies}"
+       class="btn btn-secondary btn-sm">
         Show all movies
     </a>
     <a th:href="@{/watchlist/listAll}"
-       class="btn btn-primary btn-sm mb-3">
+       class="btn btn-secondary btn-sm">
         Home
     </a>
+    <hr>
 
 
 
@@ -52,15 +53,15 @@
         </thead>
 
         <tbody>
-        <tr th:each="tempWatchList : ${watchlists}">
+        <tr>
 
-            <td th:text="${tempWatchList.name}" />
-            <td th:text="${tempWatchList.name}" />
-            <td th:text="${tempWatchList.name}" />
-            <td th:text="${tempWatchList.name}" />
-            <td th:text="${tempWatchList.name}" />
-            <td th:text="${tempWatchList.name}" />
-            <td th:text="${tempWatchList.name}" />
+            <td th:text="${movie.title}" />
+            <td th:text="${movie.length}" />
+            <td th:text="${movie.episodes}" />
+            <td th:text="${movie.ageRestriction}" />
+            <td th:text="${movie.regisseur}" />
+            <td th:text="${movie.reviews}" />
+            <td th:text="${movie.actors}" />
 
         </tr>
         </tbody>

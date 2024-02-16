@@ -19,16 +19,16 @@
 
     <p class="h4 mb-4">Updating a User</p>
 
-    <a th:href="@{/watchlist/adminUserList}"
+    <a th:href="@{/admin/adminShowUserList}"
        class="btn btn-secondary btn-sm mb-3">
         Back
     </a>
-    <a th:href="@{/watchlist/showAdminPage}"
+    <a th:href="@{/admin/showAdminPage}"
        class="btn btn-secondary btn-sm mb-3">
         Back to admin page
     </a>
 
-    <form action="#" th:action="@{/watchlist/adminUpdateUser(userId=${user.id})}"
+    <form action="#" th:action="@{/watchlist/adminUpdateUser(user=${user})}"
           th:object="${user}" method="post">
         <!-- Vorausgefüllte Daten einfügen -->
         <input type="hidden" th:field="*{id}"/>
