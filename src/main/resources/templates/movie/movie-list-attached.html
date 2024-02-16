@@ -45,13 +45,13 @@
         <tbody>
         <tr th:each="tempMovie : ${movies}">
 
-            <td th:text="${tempMovie.title}" th:href="@{/watchlist/showSingleMovie(movieId=${tempMovie.id})}" />
-            <td th:text="${tempMovie.length}" />
-            <td th:text="${tempMovie.episodes}" />
-            <td th:text="${tempMovie.ageRestriction}" />
-            <td th:text="${tempMovie.regisseur}" />
-            <td th:text="${tempMovie.reviews}" />
-            <td th:text="${tempMovie.actors}" />
+            <td th:text="${tempMovie.title}" th:href="@{/watchlist/showSingleMovie(movieId=${tempMovie.id})}"></td>
+            <td th:text="${tempMovie.length}"></td>
+            <td th:text="${tempMovie.episodes}"></td>
+            <td th:text="${tempMovie.ageRestriction}"></td>
+            <td th:text="${tempMovie.regisseur}"></td>
+            <td th:text="${tempMovie.reviews}"></td>
+            <td th:text="${tempMovie.actors}"></td>
             <td>
                 <a th:href="@{/watchlist/addMovieToWatchList(movieId=${tempMovie.id}, watchListId=${watchListId})}"
                    class="btn btn-info btn-sm">

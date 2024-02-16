@@ -5,7 +5,6 @@ import com.example.microservices.watchlistservice.entity.WatchList;
 import com.example.microservices.watchlistservice.repositories.UserRepository;
 import com.example.microservices.watchlistservice.repositories.WatchListRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,14 +34,4 @@ public class EntityService implements EntityServiceInterface{
         return false;
     }
 
-    @Override
-    public User findUserByUserName(String name) {
-        List<User> allUsers = userRepository.findAll();
-        for(User user: allUsers){
-            if (Objects.equals(user.getUserName(), name)){
-                return user;
-            }
-        }
-        return null;
-    }
 }

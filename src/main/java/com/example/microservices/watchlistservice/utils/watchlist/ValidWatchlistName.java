@@ -7,11 +7,12 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = UserNameConstraintValidator.class)
+@Constraint(validatedBy = WatchListNameConstraintValidator.class)
 @Target({ElementType.TYPE, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@SuppressWarnings("unused")
 public @interface ValidWatchlistName {
-    String message() default "Invalid Watchlistname";
+    String message() default "Invalid Watchlist name";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

@@ -7,7 +7,6 @@ import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.entity.WatchList;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface WatchListServiceInterface {
     

@@ -3,14 +3,10 @@ package com.example.microservices.watchlistservice.controller;
 import com.example.microservices.watchlistservice.dto.Actor;
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.dto.Regisseur;
-import com.example.microservices.watchlistservice.entity.Roles;
-import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.entity.WatchList;
 import com.example.microservices.watchlistservice.service.WatchListService;
 import com.example.microservices.watchlistservice.utils.StringConverter;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.boot.Banner;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +15,9 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/watchlist")
-public class WatchListController extends BaseController{
+public class WatchListController extends BaseController implements WatchListControllerInterface{
 
-    private WatchListService watchListService;
+    private final WatchListService watchListService;
 
     public WatchListController(WatchListService watchListService){
         this.watchListService = watchListService;
@@ -29,10 +25,9 @@ public class WatchListController extends BaseController{
 
     @Before("execution(* com.example.microservices.watchlistservice.controller.WatchListController.*")
     public void tokenSys(){
-        String token = getCurrentUser().getToken();
         getCurrentUser().setToken(watchListService.validateAndUpdateToken(getCurrentUser().getToken()));
         if (Objects.equals(getCurrentUser().getToken(), "NonValidToken")){
-            LoginController.accessDeniedPage();
+            LoginControllerInterface.accessDeniedPage();
         }
     }
 
@@ -65,12 +60,12 @@ public class WatchListController extends BaseController{
     }
 
     @GetMapping("/showWatchListAddPage")
-    public String showWatchListAddPage(Model model){
+    public String showWatchListAddPage(){
         return "watchlist/adding-watchlist";
     }
 
     @GetMapping("/addingWatchListToUser")
-    public String addingWatchListToUser(@RequestParam("watchList") WatchList watchList, Model model){
+    public String addingWatchListToUser(@RequestParam("watchList") WatchList watchList){
         getCurrentUser().addWatchLists(watchList);
         watchListService.saveUser(getCurrentUser());
         //TODO schauen, ob das so geht um die id mitzugeben
@@ -85,14 +80,14 @@ public class WatchListController extends BaseController{
     }
 
     @GetMapping("/deleteMovieFromWatchList")
-    public String deleteMovieFromWatchList(@RequestParam("watchListId") int watchListId, @RequestParam("movieId") int movieId, Model model){
+    public String deleteMovieFromWatchList(@RequestParam("watchListId") int watchListId, @RequestParam("movieId") int movieId){
         //TODO Problem siehe 2 Methoden obendrüber
         watchListService.deleteMovieFromWatchList(watchListId, movieId);
         return "redirect:/watchlist/showSingleWatchList" + watchListId;
     }
 
     @GetMapping("/deleteWatchList")
-    public String deleteWatchList(@RequestParam("watchListId") int id, Model model){
+    public String deleteWatchList(@RequestParam("watchListId") int id){
         watchListService.deleteWatchList(id);
         return "redirect:/watchlist/showHome";
     }
@@ -120,7 +115,7 @@ public class WatchListController extends BaseController{
     }
 
     @GetMapping("/addingMovieToWatchList")
-    public String addingMovieToWatchList(@RequestParam("movieId") int movieId, @RequestParam("watchListId") int watchListId, Model model){
+    public String addingMovieToWatchList(@RequestParam("movieId") int movieId, @RequestParam("watchListId") int watchListId){
         WatchList watchList = watchListService.findWatchListById(watchListId);
         watchList.addMovie(watchListService.findMovieById(movieId));
         watchListService.saveWatchList(watchList);
@@ -135,7 +130,7 @@ public class WatchListController extends BaseController{
     }
 
     @GetMapping("/addingCommentToMovie")
-    public String addingCommentToMovie(@RequestParam("movieId") int id,@RequestParam("comment") String comment, Model model){
+    public String addingCommentToMovie(@RequestParam("movieId") int id,@RequestParam("comment") String comment){
         Movie movie = watchListService.findMovieById(id);
         watchListService.addCommentToMovie(id, StringConverter.stringToCommentString(comment));
         watchListService.saveMovie(movie);
@@ -159,7 +154,7 @@ public class WatchListController extends BaseController{
     }
 
     @GetMapping("/deleteAccount")
-    public String deleteAccount(Model model){
+    public String deleteAccount(){
         watchListService.deleteUser(getCurrentUser());
         return "redirect:/";
     }

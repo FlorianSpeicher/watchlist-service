@@ -37,8 +37,8 @@
         <tbody>
         <tr th:each="tempActor : ${actors}">
 
-            <td th:text="${tempActor.firstName}" th:href="@{/watchlist/showSingleActor(actorId=${tempActor.id})}" />
-            <td th:text="${tempActor.lastName}" />
+            <td th:text="${tempActor.firstName}" th:href="@{/watchlist/showSingleActor(actorId=${tempActor.id})}"></td>
+            <td th:text="${tempActor.lastName}"></td>
         </tr>
         </tbody>
     </table>

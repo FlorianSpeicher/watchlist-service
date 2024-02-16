@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags -->
@@ -44,7 +44,7 @@
         <tbody>
         <tr th:each="tempMovie : ${movies}">
 
-            <td th:text="${tempMovie.title}" th:href="@{/watchlist/showSingleMovie(movieId=${tempMovie.id})}" />
+            <td th:text="${tempMovie.title}" th:href="@{/watchlist/showSingleMovie(movieId=${tempMovie.id})}"></td>
 
         </tr>
         </tbody>

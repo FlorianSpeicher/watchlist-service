@@ -1,6 +1,5 @@
 package com.example.microservices.watchlistservice.utils.password;
 
-import com.example.microservices.watchlistservice.utils.password.ValidPassword;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.passay.*;
@@ -28,7 +27,6 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
         if(result.isValid()){
             return true;
         }
-        //TODO checken ob die Änderung hier zur Default Message gerechtfertigt ist
         context.getDefaultConstraintMessageTemplate();
         return false;
     }

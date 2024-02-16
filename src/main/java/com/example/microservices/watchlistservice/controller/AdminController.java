@@ -18,20 +18,22 @@ import static com.example.microservices.watchlistservice.entity.Roles.*;
 
 @RestController
 @RequestMapping("/admin")
-public class AdminController extends BaseController{
+public class AdminController extends BaseController implements AdminControllerInterface{
 
     private WatchListService watchListService;
 
+    @Override
     @Before("execution(* com.example.microservices.watchlistservice.controller.AdminController.*")
     public void tokenSys(){
         getCurrentUser().setToken(watchListService.validateAndUpdateToken(getCurrentUser().getToken()));
         if (Objects.equals(getCurrentUser().getToken(), "NonValidToken")){
-            LoginController.accessDeniedPage();
+            LoginControllerInterface.accessDeniedPage();
         }
     }
 
+    @Override
     @GetMapping("/showAdminPage")
-    public String showAdminPage(Model model){
+    public String showAdminPage(){
         Role role = new Role();
         role.setRole(ADMIN);
         User user = new User();
@@ -42,6 +44,7 @@ public class AdminController extends BaseController{
         return "redirect:/watchlist/showHome";
     }
 
+    @Override
     @GetMapping("/adminShowUserList")
     public String adminShowUserList(Model model){
         List<User> allUsers = watchListService.findAllUsers();
@@ -49,6 +52,7 @@ public class AdminController extends BaseController{
         return "/admin/admin-user";
     }
 
+    @Override
     @GetMapping("/adminShowMovieList")
     public String adminShowMovieList(Model model){
         List<Movie> allMovies = watchListService.findAllMovies();
@@ -56,6 +60,7 @@ public class AdminController extends BaseController{
         return "/admin/admin-movie";
     }
 
+    @Override
     @GetMapping("/adminShowUpdateUser")
     public String adminShowUpdateUser(@RequestParam("userId") int id, Model model){
         User user = watchListService.findUserById(id);
@@ -63,6 +68,7 @@ public class AdminController extends BaseController{
         return "/admin/admin-user-update";
     }
 
+    @Override
     @GetMapping("/adminShowUpdateMovie")
     public String adminShowUpdateMovie(@RequestParam("movieId") int id, Model model){
         Movie movie = watchListService.findMovieById(id);
@@ -70,24 +76,28 @@ public class AdminController extends BaseController{
         return "/admin/admin-movie-update";
     }
 
+    @Override
     @GetMapping("/adminUpdateUser")
-    public String adminUpdateUser(@RequestParam("user") User user, Model model){
+    public String adminUpdateUser(@RequestParam("user") User user){
         watchListService.saveUser(user);
         return "redirect:/admin/adminShowUserList";
     }
 
+    @Override
     @GetMapping("/adminUpdateMovie")
-    public String adminUpdateMovie(@RequestParam("movie") Movie movie, Model model){
+    public String adminUpdateMovie(@RequestParam("movie") Movie movie){
         watchListService.saveMovie(movie);
         return "redirect:/admin/adminShowMovieList";
     }
 
+    @Override
     @GetMapping("/adminDeleteMovie")
     public String adminDeleteMovie(@RequestParam("movieId") int id){
         watchListService.deleteMovieById(id);
         return "redirect:/admin/adminShowMovieList";
     }
 
+    @Override
     @GetMapping("/adminDeleteUser")
     public String adminDeleteUser(@RequestParam("userId") int id){
         watchListService.deleteUserById(id);

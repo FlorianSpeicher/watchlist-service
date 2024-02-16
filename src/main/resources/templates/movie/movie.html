@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags -->
@@ -55,13 +55,13 @@
         <tbody>
         <tr>
 
-            <td th:text="${movie.title}" />
-            <td th:text="${movie.length}" />
-            <td th:text="${movie.episodes}" />
-            <td th:text="${movie.ageRestriction}" />
-            <td th:text="${movie.regisseur}" />
-            <td th:text="${movie.reviews}" />
-            <td th:text="${movie.actors}" />
+            <td th:text="${movie.title}"></td>
+            <td th:text="${movie.length}"></td>
+            <td th:text="${movie.episodes}"></td>
+            <td th:text="${movie.ageRestriction}"></td>
+            <td th:text="${movie.regisseur}"></td>
+            <td th:text="${movie.reviews}"></td>
+            <td th:text="${movie.actors}"></td>
 
         </tr>
         </tbody>

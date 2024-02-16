@@ -2,9 +2,6 @@ package com.example.microservices.watchlistservice.entity;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 @Entity
 @Table(name = "roles")
 public class Role {

@@ -8,6 +8,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = PasswordConstraintValidator.class)
 @Target({ElementType.TYPE, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@SuppressWarnings("unused")
 public @interface ValidPassword {
 
     String message() default "Invalid Password";

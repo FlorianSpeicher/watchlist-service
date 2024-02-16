@@ -5,7 +5,6 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.swing.text.html.parser.Entity;
 
 public class UserNameConstraintValidator implements ConstraintValidator<ValidUserName, String> {
 

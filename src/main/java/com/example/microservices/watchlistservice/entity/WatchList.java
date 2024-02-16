@@ -1,6 +1,7 @@
 package com.example.microservices.watchlistservice.entity;
 
 import com.example.microservices.watchlistservice.dto.Movie;
+import com.example.microservices.watchlistservice.utils.watchlist.ValidWatchlistName;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class WatchList {
     private int id;
 
     @Column(name = "name")
+    @ValidWatchlistName
     private String name;
 
     @Column(name = "movies")

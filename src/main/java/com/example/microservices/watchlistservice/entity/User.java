@@ -5,12 +5,9 @@ import com.example.microservices.watchlistservice.utils.username.ValidUserName;
 import com.example.microservices.watchlistservice.utils.watchlist.ValidWatchlistName;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.hibernate.annotations.LazyCollection;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -160,6 +157,14 @@ public class User {
 
     public void addRoles(Role role){
         this.roles = role;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
     }
 
     public User(String firstName, String lastName, String userName, String password, int age, String email, String token, List<WatchList> watchLists, Role roles) {
