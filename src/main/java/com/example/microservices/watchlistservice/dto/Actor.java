@@ -2,6 +2,7 @@ package com.example.microservices.watchlistservice.dto;
 
 import jakarta.persistence.Entity;
 
+
 @Entity
 public class Actor {
 
@@ -15,6 +16,14 @@ public class Actor {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public Actor(String firstName, String lastName) {

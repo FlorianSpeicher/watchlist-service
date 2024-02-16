@@ -9,6 +9,9 @@ public class Movie {
     private String length;
     private int ageRestriction;
     private int episodes;
+    //TODO schauen, welches Format diese Inatanzvars haben müssen, damit sie zum Converter passen
+    private String regisseur;
+    private String actor;
 
     public int getId() {
         return id;
@@ -49,6 +52,7 @@ public class Movie {
     public void setEpisodes(int episodes) {
         this.episodes = episodes;
     }
+
 
     public Movie(String title, String length, int ageRestriction, int episodes) {
         this.title = title;

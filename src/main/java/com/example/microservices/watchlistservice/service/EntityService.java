@@ -4,14 +4,25 @@ import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.entity.WatchList;
 import com.example.microservices.watchlistservice.repositories.UserRepository;
 import com.example.microservices.watchlistservice.repositories.WatchListRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
+@Service
 public class EntityService implements EntityServiceInterface{
 
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private WatchListRepository watchListRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+
     @Override
     public boolean isUserNameInUse(String name) {
         List<User> allUsers = userRepository.findAll();
@@ -32,6 +43,19 @@ public class EntityService implements EntityServiceInterface{
             }
         }
         return false;
+    }
+
+    @Override
+    public User saveUser(User user) {
+        User userModel = populateUserData(user);
+        return userRepository.save(userModel);
+    }
+
+    @Override
+    public User populateUserData(User user) {
+        User newUser = user;
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        return newUser;
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.microservices.watchlistservice.controller;
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.entity.Role;
 import com.example.microservices.watchlistservice.entity.User;
+import com.example.microservices.watchlistservice.service.EntityService;
 import com.example.microservices.watchlistservice.service.WatchListService;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import static com.example.microservices.watchlistservice.entity.Roles.*;
 public class AdminController extends BaseController implements AdminControllerInterface{
 
     private WatchListService watchListService;
+    private EntityService entityService;
 
     @Override
     @Before("execution(* com.example.microservices.watchlistservice.controller.AdminController.*")
@@ -79,7 +81,7 @@ public class AdminController extends BaseController implements AdminControllerIn
     @Override
     @GetMapping("/adminUpdateUser")
     public String adminUpdateUser(@RequestParam("user") User user){
-        watchListService.saveUser(user);
+        entityService.saveUser(user);
         return "redirect:/admin/adminShowUserList";
     }
 

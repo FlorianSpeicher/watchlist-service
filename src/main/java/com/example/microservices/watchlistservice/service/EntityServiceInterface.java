@@ -6,4 +6,7 @@ public interface EntityServiceInterface {
     boolean isUserNameInUse(String name);
     boolean isWatchListNameInUse(String name);
 
+    User saveUser(final User user);
+    User populateUserData(final User user);
+
 }
