@@ -8,6 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "watchlist")
+@SuppressWarnings("unused")
 public class WatchList {
 
     @Id
@@ -20,9 +21,11 @@ public class WatchList {
     private String name;
 
     @Column(name = "movies")
-    private List<Movie> movies;
+    private List<Integer> movies;
 
-    private String userName;
+    @ManyToOne
+    @JoinTable(name = "user")
+    private User user;
 
 
     public int getId() {
@@ -41,23 +44,23 @@ public class WatchList {
         this.name = name;
     }
 
-    public List<Movie> getMovies() {
+    public List<Integer> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(List<Integer> movies) {
         this.movies = movies;
     }
 
-    public void addMovie(Movie movie){
+    public void addMovie(int movie){
         this.movies.add(movie);
     }
 
-    public String getUserName() {
-        return userName;
+    public User getUserName() {
+        return user;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserName(User user) {
+        this.user = user;
     }
 }

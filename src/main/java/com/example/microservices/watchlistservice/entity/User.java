@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
+@SuppressWarnings("unused")
 public class User {
 
     @Id
@@ -59,13 +60,8 @@ public class User {
     @JoinTable(name = "watchlist")
     private List<WatchList> watchLists;
 
-    @ManyToMany
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
+    @ManyToOne
+    @JoinTable(name = "roles")
     private Role roles;
 
     @Column(name = "active")

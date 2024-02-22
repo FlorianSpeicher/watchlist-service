@@ -1,8 +1,9 @@
 package com.example.microservices.watchlistservice.dto;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
-@Entity
+@SuppressWarnings("unused")
 public class Regisseur {
     private int id;
     private String firstName;

@@ -117,7 +117,8 @@ public class WatchListController extends BaseController implements WatchListCont
     @GetMapping("/addingMovieToWatchList")
     public String addingMovieToWatchList(@RequestParam("movieId") int movieId, @RequestParam("watchListId") int watchListId){
         WatchList watchList = watchListService.findWatchListById(watchListId);
-        watchList.addMovie(watchListService.findMovieById(movieId));
+       // watchList.addMovie(watchListService.findMovieById(movieId));
+        watchList.addMovie(movieId);
         watchListService.saveWatchList(watchList);
         //TODO RequestParam bei Übergabe beachten?
         return "redirect:/watchlist/showSingleWatchList";

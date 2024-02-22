@@ -18,7 +18,7 @@
   <hr>
   <h3>Watchlist-Application</h3>
   <hr>
-  <h5>List of all movies with admin rights</h5>
+  <h5>List of all movie with admin rights</h5>
   <a th:href="@{/admin/showAdminPage}"
      class="btn btn-secondary btn-sm">
     Back to admin page
@@ -40,7 +40,7 @@
     </thead>
 
     <tbody>
-    <tr th:each="tempMovie : ${movies}">
+    <tr th:each="tempMovie : ${movie}">
 
       <td th:text="${tempMovie.title}"></td>
       <td th:text="${tempMovie.length}"></td>

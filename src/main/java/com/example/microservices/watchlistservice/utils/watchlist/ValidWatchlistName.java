@@ -1,6 +1,5 @@
 package com.example.microservices.watchlistservice.utils.watchlist;
 
-import com.example.microservices.watchlistservice.utils.username.UserNameConstraintValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

@@ -158,7 +158,8 @@ public class WatchListService implements WatchListServiceInterface{
     public void deleteMovieFromWatchList(int watchListId, int movieId) {
         Optional<WatchList> watchListOptional = watchListRepository.findById(watchListId);
         WatchList watchList = watchListOptional.orElse(null);
-        List<Movie> allMovies = Objects.requireNonNull(watchList).getMovies();
+       // List<Movie> allMovies = Objects.requireNonNull(watchList).getMovies();
+        List<Integer> allMovies = Objects.requireNonNull(watchList).getMovies();
         Movie movie = findMovieById(movieId);
         allMovies.remove(movie);
         watchList.setMovies(allMovies);

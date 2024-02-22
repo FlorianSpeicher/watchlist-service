@@ -1,8 +1,6 @@
 package com.example.microservices.watchlistservice.dto;
 
-import jakarta.persistence.Entity;
-
-@Entity
+@SuppressWarnings("unused")
 public class Movie {
     private int id;
     private String title;

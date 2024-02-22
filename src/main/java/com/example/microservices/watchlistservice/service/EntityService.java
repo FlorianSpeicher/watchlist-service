@@ -19,8 +19,8 @@ public class EntityService implements EntityServiceInterface{
     @Autowired
     private WatchListRepository watchListRepository;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+   // @Autowired
+   // PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -54,7 +54,8 @@ public class EntityService implements EntityServiceInterface{
     @Override
     public User populateUserData(User user) {
         User newUser = user;
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        //newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setPassword(user.getPassword());
         return newUser;
     }
 

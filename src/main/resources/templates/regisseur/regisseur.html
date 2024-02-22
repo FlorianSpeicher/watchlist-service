@@ -42,7 +42,7 @@
         </thead>
 
         <tbody>
-        <tr th:each="tempMovie : ${movies}">
+        <tr th:each="tempMovie : ${movie}">
 
             <td th:text="${tempMovie.title}" th:href="@{/watchlist/showSingleMovie(movieId=${tempMovie.id})}"></td>
 

@@ -1,11 +1,11 @@
 package com.example.microservices.watchlistservice.dto;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 
-@Entity
+@SuppressWarnings("unused")
 public class Actor {
-
     private int id;
     private final String firstName;
     private final String lastName;

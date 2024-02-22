@@ -2,19 +2,22 @@ package com.example.microservices.watchlistservice.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "roles")
+@SuppressWarnings("unused")
 public class Role {
     @Id
-    @Column(name = "user_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "role")
     private Roles role;
 
-    @OneToOne(mappedBy = "roles")
-    private User users;
+    @OneToMany(mappedBy = "roles")
+    private List<User> users;
 
     public int getId() {
         return id;
@@ -32,11 +35,11 @@ public class Role {
         this.role = role;
     }
 
-    public User getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(User users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 
