@@ -3,6 +3,7 @@ package com.example.microservices.watchlistservice.service;
 import com.example.microservices.watchlistservice.dto.Actor;
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.dto.Regisseur;
+import com.example.microservices.watchlistservice.entity.Role;
 import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.entity.WatchList;
 
@@ -56,4 +57,8 @@ public interface WatchListServiceInterface {
     void deleteMovieFromWatchList(int watchListId, int movieId);
 
     void deleteWatchList(int id);
+
+    User findUserByUserName(String name);
+
+    Role findRoleById(int id);
 }

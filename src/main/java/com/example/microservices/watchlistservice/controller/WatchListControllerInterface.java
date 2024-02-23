@@ -3,12 +3,13 @@ package com.example.microservices.watchlistservice.controller;
 import com.example.microservices.watchlistservice.entity.WatchList;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 @SuppressWarnings("unused")
 public interface WatchListControllerInterface {
     void tokenSys();
     String showHome(Model model);
-    String showListOfAllMovies(Model model);
+    ModelAndView showListOfAllMovies();
     String showActorList(Model model);
     String showRegisseurList(Model model);
     String showWatchListAddPage();

@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "watchlist")
+@Table(name = "watchlists")
 @SuppressWarnings("unused")
 public class WatchList {
 

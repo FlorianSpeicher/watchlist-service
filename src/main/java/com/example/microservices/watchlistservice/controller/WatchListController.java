@@ -7,8 +7,11 @@ import com.example.microservices.watchlistservice.entity.WatchList;
 import com.example.microservices.watchlistservice.service.WatchListService;
 import com.example.microservices.watchlistservice.utils.StringConverter;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,16 +36,29 @@ public class WatchListController extends BaseController implements WatchListCont
 
     @GetMapping("/showHome")
     public String showHome(Model model){
+        System.out.println("1");
         List<WatchList> allUserWatchLists = watchListService.findAllWatchListsByUser(getCurrentUser());
+        System.out.println("2");
         model.addAttribute("watchLists", allUserWatchLists);
         return "/watchlist/home";
     }
 
+    /*
     @GetMapping("/showListOfAllMovies")
     public String showListOfAllMovies(Model model){
         List<Movie> allMovies = watchListService.findAllMovies();
         model.addAttribute("movies", allMovies);
-        return "/movie/movie-list-indep";
+        return "movie-list-indep";
+    }
+
+     */
+
+    @GetMapping("/showListOfAllMovies")
+    public ModelAndView showListOfAllMovies(){
+        List<Movie> allMovies = watchListService.findAllMovies();
+        ModelAndView modelAndView = new ModelAndView("movie-list-indep");
+        modelAndView.addObject("movies", allMovies);
+        return modelAndView;
     }
 
     @GetMapping("/showActorList")

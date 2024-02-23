@@ -54,10 +54,11 @@ public class User {
     @Email
     private String email;
 
+    @Column(name = "token")
     private String token;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "watchlist")
+    @OneToMany
+    @JoinTable(name = "watchlists")
     private List<WatchList> watchLists;
 
     @ManyToOne

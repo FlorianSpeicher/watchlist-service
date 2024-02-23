@@ -3,8 +3,10 @@ package com.example.microservices.watchlistservice.service;
 import com.example.microservices.watchlistservice.dto.Actor;
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.dto.Regisseur;
+import com.example.microservices.watchlistservice.entity.Role;
 import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.entity.WatchList;
+import com.example.microservices.watchlistservice.repositories.RoleRepository;
 import com.example.microservices.watchlistservice.repositories.UserRepository;
 import com.example.microservices.watchlistservice.repositories.WatchListRepository;
 import static com.example.microservices.watchlistservice.utils.StringConverter.*;
@@ -23,31 +25,33 @@ public class WatchListService implements WatchListServiceInterface{
 
     private final UserRepository userRepository;
     private final WatchListRepository watchListRepository;
+    private final RoleRepository roleRepository;
 
     private final WebClient webClientMovie;
     private final WebClient webClientAuth;
 
     @Autowired
-    public WatchListService(UserRepository userRepository, WatchListRepository watchListRepository, WebClient.Builder webClientBuilderMovie, WebClient.Builder webClientBuilderAuth ){
+    public WatchListService(UserRepository userRepository, WatchListRepository watchListRepository, RoleRepository roleRepository, WebClient.Builder webClientBuilderMovie, WebClient.Builder webClientBuilderAuth ){
         this.userRepository = userRepository;
         this.watchListRepository = watchListRepository;
-        this.webClientMovie = webClientBuilderMovie.baseUrl("http://localhost:8080/movies").build();
-        this.webClientAuth = webClientBuilderAuth.baseUrl("http://localhost:8080/auth").build();
+        this.roleRepository = roleRepository;
+        this.webClientMovie = webClientBuilderMovie.baseUrl("http://localhost:3307/movies").build();
+        this.webClientAuth = webClientBuilderAuth.baseUrl("http://localhost:3308/auth/token").build();
     }
 
     @Override
     public String generateToken() {
-        return webClientAuth.get().uri("/generateToken").retrieve().bodyToMono(String.class).block();
+        return webClientAuth.get().uri("/generate").retrieve().bodyToMono(String.class).block();
     }
 
     @Override
     public String validateAndUpdateToken(String token) {
-        return webClientAuth.post().uri("/generateToken").bodyValue(token).retrieve().bodyToMono(String.class).block();
+        return webClientAuth.post().uri("/validateAndUpdate").bodyValue(token).retrieve().bodyToMono(String.class).block();
     }
 
     @Override
     public void invalidateToken(String user) {
-        webClientAuth.delete().uri("/invalidateToken");
+        webClientAuth.delete().uri("/invalidate");
     }
 
     @Override
@@ -169,6 +173,25 @@ public class WatchListService implements WatchListServiceInterface{
     @Override
     public void deleteWatchList(int id) {
         watchListRepository.deleteById(id);
+    }
+
+    @Override
+    public User findUserByUserName(String name) {
+        List<User> allUsers = userRepository.findAll();
+        for (User user: allUsers){
+            if (Objects.equals(user.getUserName(), name)){
+                return user;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Role findRoleById(int id) {
+        Optional<Role> roleOptional = roleRepository.findById(id);
+        Role role = roleOptional.orElse(null);
+        return role;
     }
 
 }

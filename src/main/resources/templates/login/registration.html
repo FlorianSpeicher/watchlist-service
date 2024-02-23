@@ -19,8 +19,8 @@
 
         <p class="h4 mb-4">Registration</p>
 
-        <form action="#" th:action="@{/watchlist/addUser}"
-                        th:object="${user}" method="post">
+        <form action="#" th:action="@{/addNewUser/redirect}"
+              th:object="${user}" method="post" modelAttribute="user">
 
             <!-- Place for messages: error, alert etc ... -->
             <div class="form-group">
@@ -54,7 +54,7 @@
             <button type="submit" class="btn btn-info col-2">Save</button>
         </form>
         <hr>
-        <a th:href="@{/watchlist/login}">Back to login page</a>
+        <a th:href="@{/login}">Back to login page</a>
     </div>
 </body>
 </html>

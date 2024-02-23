@@ -21,7 +21,7 @@
                         <div class="card-text">
 
                             <!-- Login Form -->
-                            <form action="#" th:action="@{/authenticateUser}" method="post" class="form-horizontal">
+                            <form action="#" th:action="@{/authenticateUser}" method="post" modelAttribute="user" class="form-horizontal">
 
                                 <!-- Place for messages: error, alert etc ... -->
                                 <div class="form-group">
@@ -74,7 +74,7 @@
 
                             </form>
                             <hr>
-                            <a th:href="@{/watchlist/addUser}">No account, register here!</a>
+                            <a th:href="@{/addUser}">No account, register here!</a>
                             
                         </div>
                     </div>
