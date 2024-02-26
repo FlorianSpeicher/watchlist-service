@@ -31,16 +31,24 @@
 		<hr>
 	</div>
 
-	<span sec:authentication="principal.username"></span>
-	<span sec:authentication="principal.authorities"></span>
+	<span th:text="${#authentication.getPrincipal()}"></span>
+	<!--<span sec:authentication="principal.authorities"></span>-->
 	<hr>
-	<a th:href="@{/watchlist/addWatchList}"
+	<a th:href="@{/watchlist/showWatchListAddPage}"
 		class="btn btn-secondary btn-sm">
 		Add Watchlist
 	</a>
-	<a th:href="@{/watchlist/listAllMovies}"
+	<a th:href="@{/watchlist/showListOfAllMovies}"
 	   class="btn btn-secondary btn-sm">
 		Show all movie
+	</a>
+	<a th:href="@{/watchlist/showActorList}"
+	   class="btn btn-secondary btn-sm">
+		Show all Actors
+	</a>
+	<a th:href="@{/watchlist/showRegisseurList}"
+	   class="btn btn-secondary btn-sm">
+		Show all Regisseurs
 	</a>
 	<hr>
 

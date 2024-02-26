@@ -56,28 +56,31 @@ public class WatchListController extends BaseController implements WatchListCont
     @GetMapping("/showListOfAllMovies")
     public ModelAndView showListOfAllMovies(){
         List<Movie> allMovies = watchListService.findAllMovies();
-        ModelAndView modelAndView = new ModelAndView("movie-list-indep");
+        ModelAndView modelAndView = new ModelAndView("movie/movie-list-indep");
         modelAndView.addObject("movies", allMovies);
         return modelAndView;
     }
 
     @GetMapping("/showActorList")
-    public String showActorList(Model model){
+    public ModelAndView showActorList(){
         List<Actor> allActors = watchListService.findAllActors();
-        model.addAttribute("actors", allActors);
-        return "/actor/actor-list";
+        ModelAndView modelAndView = new ModelAndView("actor/actor-list");
+        modelAndView.addObject("actors", allActors);
+        return modelAndView;
     }
 
     @GetMapping("/showRegisseurList")
-    public String showRegisseurList(Model model){
+    public ModelAndView showRegisseurList(){
         List<Regisseur> allRegisseur = watchListService.findAllRegisseurs();
-        model.addAttribute("regisseurs", allRegisseur);
-        return "/regisseur/regisseur-list";
+        ModelAndView modelAndView = new ModelAndView("regisseur/regisseur-list");
+        modelAndView.addObject("regisseurs", allRegisseur);
+        return modelAndView;
     }
 
     @GetMapping("/showWatchListAddPage")
-    public String showWatchListAddPage(){
-        return "watchlist/adding-watchlist";
+    public ModelAndView showWatchListAddPage(){
+        ModelAndView modelAndView = new ModelAndView("watchlist/adding-watchlist");
+        return modelAndView;
     }
 
     @GetMapping("/addingWatchListToUser")

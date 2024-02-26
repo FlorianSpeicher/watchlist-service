@@ -21,12 +21,12 @@ public class User {
 
     @Column(name = "first_name")
     @NotEmpty(message = "Firstname cannot be empty")
-    @NotNull
+    //@NotNull
     private String firstName;
 
     @Column(name = "last_name")
     @NotEmpty(message = "Lastname cannot be empty")
-    @NotNull
+   //@NotNull
     private String lastName;
 
     @Column(name = "user_name")
@@ -38,19 +38,19 @@ public class User {
     @Column(name = "password")
     @NotEmpty(message = "Username cannot be empty")
     @NotNull
-    @ValidPassword
+    //@ValidPassword
     private String password;
 
     @Column(name = "age")
     @NotEmpty(message = "Age cannot be empty")
-    @NotNull
+    //@NotNull
     @Min(value = 0, message = "Age cannot be negative")
     @Max(value = 150, message = "You cannot be older than 150")
     private int age;
 
     @Column(name = "email")
     @NotEmpty(message = "Email cannot be empty")
-    @NotNull
+    //@NotNull
     @Email
     private String email;
 
@@ -61,12 +61,15 @@ public class User {
     @JoinTable(name = "watchlists")
     private List<WatchList> watchLists;
 
-    @ManyToOne
-    @JoinTable(name = "roles")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "role_id")
     private Role roles;
 
     @Column(name = "active")
     private int active;
+
+    public User(User user) {
+    }
 
 
     public int getId() {

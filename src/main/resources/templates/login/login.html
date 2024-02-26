@@ -21,7 +21,7 @@
                         <div class="card-text">
 
                             <!-- Login Form -->
-                            <form action="#" th:action="@{/authenticateUser}" method="post" modelAttribute="user" class="form-horizontal">
+                            <form action="#" th:action="@{/authenticateUser}" th:object="${user}" method="post" modelAttribute="user" class="form-horizontal">
 
                                 <!-- Place for messages: error, alert etc ... -->
                                 <div class="form-group">
@@ -50,14 +50,16 @@
                                     </div>
                                 </div>
 
-                                <!-- User name -->
-                                <div style="margin-bottom: 25px;" class="input-group">
-                                    <input type="text" name="username" placeholder="Username" class="form-control" />
-                                </div>
+
 
                                 <!-- email -->
                                 <div style="margin-bottom: 25px;" class="input-group">
                                     <input type="text" name="email" placeholder="Email" class="form-control" />
+                                </div>
+
+                                <!-- User name -->
+                                <div style="margin-bottom: 25px;" class="input-group">
+                                    <input type="text" name="username" placeholder="Username" class="form-control" />
                                 </div>
 
                                 <!-- Password -->

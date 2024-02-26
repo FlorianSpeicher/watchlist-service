@@ -31,8 +31,8 @@ public class Role {
         return role;
     }
 
-    public void setRole(Roles role) {
-        this.role = role;
+    public void setRole(String role) {
+        this.role = Roles.valueOf(role);
     }
 
     public List<User> getUsers() {

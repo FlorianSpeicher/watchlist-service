@@ -178,6 +178,9 @@ public class WatchListService implements WatchListServiceInterface{
     @Override
     public User findUserByUserName(String name) {
         List<User> allUsers = userRepository.findAll();
+        System.out.println("WatchListService: findUserByUsername: ");
+        System.out.println(name);
+        System.out.println(allUsers + "\n\n");
         for (User user: allUsers){
             if (Objects.equals(user.getUserName(), name)){
                 return user;
@@ -190,6 +193,7 @@ public class WatchListService implements WatchListServiceInterface{
     @Override
     public Role findRoleById(int id) {
         Optional<Role> roleOptional = roleRepository.findById(id);
+        System.out.println("Id von Role:" + id);
         Role role = roleOptional.orElse(null);
         return role;
     }

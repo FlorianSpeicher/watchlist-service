@@ -8,8 +8,8 @@ public class Movie {
     private int ageRestriction;
     private int episodes;
     //TODO schauen, welches Format diese Inatanzvars haben müssen, damit sie zum Converter passen
-    private String regisseur;
-    private String actor;
+    private Regisseur regisseur;
+    private Actor actor;
 
     public int getId() {
         return id;

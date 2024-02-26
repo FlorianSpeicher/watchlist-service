@@ -10,9 +10,9 @@ public interface WatchListControllerInterface {
     void tokenSys();
     String showHome(Model model);
     ModelAndView showListOfAllMovies();
-    String showActorList(Model model);
-    String showRegisseurList(Model model);
-    String showWatchListAddPage();
+    ModelAndView showActorList();
+    ModelAndView showRegisseurList();
+    ModelAndView showWatchListAddPage();
     String addingWatchListToUser(@RequestParam("watchList") WatchList watchList);
     String showSingleWatchList(@RequestParam("watchListId") int id, Model model);
     String deleteMovieFromWatchList(@RequestParam("watchListId") int watchListId, @RequestParam("movieId") int movieId);
