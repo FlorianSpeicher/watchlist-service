@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 @SuppressWarnings("unused")
 public interface WatchListControllerInterface {
     void tokenSys();
-    String showHome(Model model);
+    ModelAndView showHome(Model model);
     ModelAndView showListOfAllMovies();
     ModelAndView showActorList();
     ModelAndView showRegisseurList();

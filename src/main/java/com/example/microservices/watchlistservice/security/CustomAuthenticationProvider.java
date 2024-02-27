@@ -25,7 +25,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
             return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
         }catch (UsernameNotFoundException e){
-            System.out.println("Ich bin im catch fall");
             throw new BadCredentialsException("Invalid Credentials");
         }
     }

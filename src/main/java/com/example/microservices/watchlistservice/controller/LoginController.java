@@ -30,6 +30,7 @@ public class LoginController extends BaseController implements LoginControllerIn
     private PasswordEncoder passwordEncoder;
 
     public LoginController(WatchListService watchListService, EntityService entityService){
+        super(watchListService);
         this.watchListService = watchListService;
         this.entityService = entityService;
     }
@@ -83,31 +84,6 @@ public class LoginController extends BaseController implements LoginControllerIn
         modelAndView.addObject("user", new User());
         return modelAndView;
     }
-
-
-
-
-
-
-/*
-    @Override
-    @GetMapping("/login")
-    public ModelAndView login(){
-        User user = getCurrentUser();
-        //getCurrentUser().setToken(watchListService.generateToken());
-        ModelAndView modelAndView = new ModelAndView("watchlist/home");
-        WatchList watchList = new WatchList();
-        watchList.setName("Erste Watchlist");
-        watchList.setId(45);
-        watchList.setMovies(new ArrayList<>());
-        modelAndView.addObject("watchlists", watchList);
-        System.out.println("login");
-        return modelAndView;
-    }
-
- */
-
-
 
 
 /*

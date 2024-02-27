@@ -1,11 +1,16 @@
 package com.example.microservices.watchlistservice.security;
 
 import com.example.microservices.watchlistservice.entity.Role;
+import com.example.microservices.watchlistservice.entity.Roles;
 import com.example.microservices.watchlistservice.entity.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 public class CustomUserPrincipal implements UserDetails {
     private User user;
@@ -16,7 +21,11 @@ public class CustomUserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return (Collection<? extends GrantedAuthority>) this.user.getRoles();
+        List<GrantedAuthority> list = new ArrayList<>();
+        list.add(new SimpleGrantedAuthority(Roles.ROLE_USER.name()));
+        list.add(new SimpleGrantedAuthority(Roles.ROLE_ADMIN.name()));
+
+        return list;
     }
 
     @Override

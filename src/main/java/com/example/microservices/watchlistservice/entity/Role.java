@@ -44,6 +44,6 @@ public class Role {
     }
 
     public Role() {
-        this.role = Roles.USER;
+        this.role = Roles.ROLE_USER;
     }
 }

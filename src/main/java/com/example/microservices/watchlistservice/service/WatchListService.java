@@ -92,12 +92,12 @@ public class WatchListService implements WatchListServiceInterface{
 
     @Override
     public Regisseur findRegisseurById(int id) {
-        return stringToRegisseur(webClientMovie.get().uri("/list/id/regisseur/{id}", id).retrieve().bodyToMono(String.class).block());
+        return stringToRegisseur(webClientMovie.get().uri("/list/id/onlyregisseur/{id}", id).retrieve().bodyToMono(String.class).block());
     }
 
     @Override
     public Actor findActorById(int id) {
-        return stringToActor(webClientMovie.get().uri("/list/id/actor/{id}", id).retrieve().bodyToMono(String.class).block());
+        return stringToActor(webClientMovie.get().uri("/list/id/onlyactor/{id}", id).retrieve().bodyToMono(String.class).block());
     }
 
     @Override
@@ -150,12 +150,12 @@ public class WatchListService implements WatchListServiceInterface{
 
     @Override
     public List<Movie> getMoviesByActorId(int id) {
-        return stringToMovieList(webClientMovie.get().uri("/list/actor/{id}", id).retrieve().bodyToMono(String.class).block());
+        return stringToMovieList(webClientMovie.get().uri("/list/id/actor/{id}", id).retrieve().bodyToMono(String.class).block());
     }
 
     @Override
     public List<Movie> getMoviesByRegisseurId(int id) {
-        return stringToMovieList(webClientMovie.get().uri("/list/regisseur/{id}", id).retrieve().bodyToMono(String.class).block());
+        return stringToMovieList(webClientMovie.get().uri("/list/id/regisseur/{id}", id).retrieve().bodyToMono(String.class).block());
     }
 
     @Override

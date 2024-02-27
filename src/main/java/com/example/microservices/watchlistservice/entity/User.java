@@ -16,7 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "id")
     private int id;
 
     @Column(name = "first_name")
@@ -57,9 +57,8 @@ public class User {
     @Column(name = "token")
     private String token;
 
-    @OneToMany
-    @JoinTable(name = "watchlists")
-    private List<WatchList> watchLists;
+    @OneToMany( mappedBy = "user")
+    private List<WatchList> watchLists = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "role_id")
@@ -182,4 +181,5 @@ public class User {
     public User(){
         this("unknown", "unknown", "unknown", "0000", 0, "unknown@unknown.com", null , new ArrayList<>(), new Role());
     }
+
 }

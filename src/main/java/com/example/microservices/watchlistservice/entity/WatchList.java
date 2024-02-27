@@ -24,7 +24,7 @@ public class WatchList {
     private List<Integer> movies;
 
     @ManyToOne
-    @JoinTable(name = "user")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 

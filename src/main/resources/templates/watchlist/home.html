@@ -18,20 +18,19 @@
 
 	<hr>
 	<h3>Watchlist-Application</h3>
-	<form action="#" th:action="@{/logout}" method=post>
-		<a class="btn btn-secondary btn-sm">Logout</a>
-	</form>
+		<a th:href="@{/logout}" class="btn btn-secondary btn-sm">Logout</a>
 	<hr>
-	<div sec:authorize="hasRole('ADMIN')">
+	<div sec:authorize="hasRole('ROLE_ADMIN')">
 
-	<a th:href="@{/watchlist/showAdminPage}"
+	<a th:href="@{/admin/showAdminPage}"
 	   class="btn btn-warning btn-sm">
 		Admin Page
 	</a>
 		<hr>
 	</div>
-
-	<span th:text="${#authentication.getPrincipal()}"></span>
+	<a>Willkommen </a>
+	<span sec:authentication="name"></span>
+	<span sec:authentication="principal.authorities"></span>
 	<!--<span sec:authentication="principal.authorities"></span>-->
 	<hr>
 	<a th:href="@{/watchlist/showWatchListAddPage}"

@@ -24,6 +24,10 @@ public class AdminController extends BaseController implements AdminControllerIn
     private WatchListService watchListService;
     private EntityService entityService;
 
+    public AdminController(WatchListService watchListService) {
+        super(watchListService);
+    }
+
     @Override
     @Before("execution(* com.example.microservices.watchlistservice.controller.AdminController.*")
     public void tokenSys(){
@@ -37,7 +41,7 @@ public class AdminController extends BaseController implements AdminControllerIn
     @GetMapping("/showAdminPage")
     public String showAdminPage(){
         Role role = new Role();
-        role.setRole("ADMIN");
+        role.setRole("ROLE_ADMIN");
         User user = new User();
         user.setRoles(role);
         if (getCurrentUser().getRoles().equals(user.getRoles())){
