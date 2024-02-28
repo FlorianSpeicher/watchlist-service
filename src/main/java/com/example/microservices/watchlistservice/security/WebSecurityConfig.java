@@ -35,14 +35,6 @@ public class WebSecurityConfig /*extends WebSecurityConfiguration*/ {
     @Autowired
     private CustomAuthenticationProvider authenticationProvider;
 
-  /*
-    public void configureGlobal(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth.inMemoryAuthentication().withUser("user")
-                .password(passwordEncoder().encode("password")).roles("USER");
-    }
-
-*/
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
@@ -50,21 +42,6 @@ public class WebSecurityConfig /*extends WebSecurityConfiguration*/ {
         authenticationManagerBuilder.authenticationProvider(authenticationProvider());
         return authenticationManagerBuilder.build();
     }
-
-/*
-    @Bean
-    public DaoAuthenticationProvider authProvider(){
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        CustomUserDetailsService customUserDetailsService = new CustomUserDetailsService();
-        authProvider.setUserDetailsService(customUserDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
- */
-
-
-
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService);
@@ -76,14 +53,7 @@ public class WebSecurityConfig /*extends WebSecurityConfiguration*/ {
     public static PasswordEncoder passwordEncoder(){
         return  new BCryptPasswordEncoder();
     }
-    /*
-    @Bean
-    public static CustomUserDetailsService customUserDetailsService(){
-        return new CustomUserDetailsService();
-    }
 
-
-*/
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -105,7 +75,7 @@ public class WebSecurityConfig /*extends WebSecurityConfiguration*/ {
                                 form
                                         .loginPage("/login")
                                         .loginProcessingUrl("/authenticateUser")
-                                        .defaultSuccessUrl("/watchlist/showHome")
+                                        .defaultSuccessUrl("/tokenLoginSet")
                                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll
@@ -118,32 +88,5 @@ public class WebSecurityConfig /*extends WebSecurityConfiguration*/ {
 
         return httpSecurity.build();
     }
-/*
-    @Bean
-    public UserDetailsService userDetailsService(){
-        UserDetails user = User.builder().username("userName").password("{}test").authorities("USER").build();
-        return new InMemoryUserDetailsManager(user);
-    }
 
-
-    @Bean
-    public UserDetailsManager userDetailsManager(DataSource dataSource){
-        JdbcUserDetailsManager theUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-
-        theUserDetailsManager
-                .setUsersByUsernameQuery("select user_id, first_name, last_name, user_name, password, age, email, token, active, role_id from user where user_id=?");
-
-
-
-
-        return theUserDetailsManager;
-    }
-
-
-
-    @Bean
-    CustomUserDetailsService customUserDetailsService(){
-        return new CustomUserDetailsService(watchListService);
-    }
-*/
 }

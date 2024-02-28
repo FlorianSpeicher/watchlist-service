@@ -35,9 +35,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("loadUserByUsername");
-        System.out.println("username inloadUserByUsername:" + username);
-        System.out.println(watchListService.findUserByUserName(username).getId() + " usernamefind");
         User user = watchListService.findUserByUserName(username);
         if (user == null){
             throw new UsernameNotFoundException(username);

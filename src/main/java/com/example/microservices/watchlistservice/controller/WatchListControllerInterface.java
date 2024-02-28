@@ -18,15 +18,15 @@ public interface WatchListControllerInterface {
     ModelAndView showWatchListAddPage(WebRequest webRequest);
     ModelAndView addingWatchListToUser(@ModelAttribute("watchList") WatchList watchList, BindingResult bindingResult);
     ModelAndView showSingleWatchList(@RequestParam("watchListId") int id);
-    String deleteMovieFromWatchList(@RequestParam("watchListId") int watchListId, @RequestParam("movieId") int movieId);
+    ModelAndView deleteMovieFromWatchList(@RequestParam("watchListId") int watchListId, @RequestParam("movieId") int movieId);
     ModelAndView deleteWatchList(@RequestParam("watchListId") int id);
-    String showMovieListToAddWatchList(@RequestParam("watchListId") int id, Model model);
-    String showSingleMovie(@RequestParam("movieId") int id, Model model);
-    String showMovieAddPage(@RequestParam("movieId") int id, Model model);
-    String addingMovieToWatchList(@RequestParam("movieId") int movieId, @RequestParam("watchListId") int watchListId);
-    String showCommentAddPage(@RequestParam("movieId") int id, Model model);
-    String addingCommentToMovie(@RequestParam("movieId") int id,@RequestParam("comment") String comment);
-    String showSingleRegisseur(@RequestParam("regisseurId") int id, Model model);
-    String showSingleActor(@RequestParam("actorId") int id, Model model);
-    String deleteAccount();
+    ModelAndView showMovieListToAddWatchList(@RequestParam("watchListId") int id);
+    ModelAndView showSingleMovie(@RequestParam("movieId") int id);
+    ModelAndView showMovieAddPage(@RequestParam("movieId") int id);
+    ModelAndView addingMovieToWatchList(@RequestParam("movieId") int movieId, @RequestParam("watchListId") int watchListId);
+    ModelAndView showCommentAddPage(@RequestParam("movieId") int id);
+    ModelAndView addingCommentToMovie(@RequestParam("movieId") int id,@RequestParam("comment") String comment);
+    ModelAndView showSingleRegisseur(@RequestParam("regisseurId") int id);
+    ModelAndView showSingleActor(@RequestParam("actorId") int id);
+    ModelAndView deleteAccount();
 }

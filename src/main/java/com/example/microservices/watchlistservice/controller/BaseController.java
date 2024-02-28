@@ -22,25 +22,7 @@ public abstract class BaseController {
     private WatchListService watchListService;
 
     protected User getCurrentUser(){
-        System.out.println("getCurrentUser");
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getDetails());
-        System.out.println(watchListService.findUserByUserName(SecurityContextHolder.getContext().getAuthentication().getName()).getUserName());
         return watchListService.findUserByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
-
-
-
-        //System.out.println(SecurityContextHolder.getContext().getAuthentication().getDetails());
-        //HttpServletRequest httpServletRequest = null;
-        //Principal principal = httpServletRequest.getUserPrincipal();
-        //System.out.println(principal.getName());
-        /*
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getName());
-        System.out.println("Hallo");
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
-
-         */
-        //return new User();
     }
 
     public BaseController(WatchListService watchListService){

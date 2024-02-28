@@ -26,11 +26,6 @@ public class WatchList {
     @Column(name = "user_id")
     private int user;
 
-
-
-
-
-
     public int getId() {
         return id;
     }

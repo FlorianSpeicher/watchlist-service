@@ -10,13 +10,12 @@ import org.springframework.web.servlet.ModelAndView;
 @SuppressWarnings("unused")
 public interface LoginControllerInterface {
 
-    //ModelAndView authenticateUser(@ModelAttribute User user, BindingResult bindingResult);
-
     static String accessDeniedPage() {
-        //TODO RückgabeWert
         return "login/access-denied";
     }
 
     ModelAndView login();
     ModelAndView addUser(WebRequest webRequest);
+
+    ModelAndView tokenLoginSet();
 }

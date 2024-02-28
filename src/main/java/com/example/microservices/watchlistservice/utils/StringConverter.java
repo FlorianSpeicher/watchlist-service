@@ -55,7 +55,6 @@ public abstract class StringConverter {
    }
 
    public static List<Movie> stringToMovieList(String input){
-       System.out.println("stringToMovieList: " + input);
        List<Movie> movieList;
        try {
            movieList = om.readValue(input, new TypeReference<List<Movie>>() {});
@@ -64,32 +63,6 @@ public abstract class StringConverter {
            return null;
        }
        return movieList;
-
-
-/*
-       List<Movie> allMovies = new ArrayList<>();
-       try {
-           JsonArray jsonArray = new JsonArray();
-           System.out.println("hier wird noch audgeführt");
-           if(jsonArray != null){
-               System.out.println("Ist Fall");
-               System.out.println(jsonArray);
-               int len = jsonArray.size();
-               for (int i = 0; i < len; i++){
-                   System.out.println(om.readValue((JsonParser) jsonArray.get(i), Movie.class));
-                   allMovies.add(om.readValue((JsonParser) jsonArray.get(i), Movie.class));
-               }
-           }
-       } catch (JsonProcessingException e) {
-           System.err.println("JsonProcessingException in method: stringToMovieList");
-           System.out.println(allMovies);
-           return null;
-       } catch (IOException e) {
-           throw new RuntimeException(e);
-       }
-       System.out.println(allMovies);
-       return allMovies;
-       */
    }
 
    public static String movieToString(Movie movie){

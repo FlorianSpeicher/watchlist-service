@@ -21,7 +21,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication){
         try {
-            System.out.println(authentication.getName() + "authentication.getname");
             UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
             return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
         }catch (UsernameNotFoundException e){

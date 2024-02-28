@@ -15,6 +15,7 @@ import static com.example.microservices.watchlistservice.utils.StringConverter.*
 
 import com.example.microservices.watchlistservice.utils.watchlist.ValidWatchlistName;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -53,7 +54,7 @@ public class WatchListService implements WatchListServiceInterface{
 
     @Override
     public String validateAndUpdateToken(String token) {
-        return webClientAuth.post().uri("/validateAndUpdate").bodyValue(token).retrieve().bodyToMono(String.class).block();
+        return webClientAuth.method(HttpMethod.GET).uri("/validateAndUpdate").bodyValue(token).retrieve().bodyToMono(String.class).block();
     }
 
     @Override
@@ -130,8 +131,6 @@ public class WatchListService implements WatchListServiceInterface{
 
     @Override
     public List<Movie> findAllMovies() {
-        System.out.println("findAllMovies(Service): "+
-                webClientMovie.get().uri("/list").retrieve().bodyToMono(String.class).block());
         return stringToMovieList(webClientMovie.get().uri("/list").retrieve().bodyToMono(String.class).block());
     }
 
@@ -146,21 +145,6 @@ public class WatchListService implements WatchListServiceInterface{
         }
         return movieList;
     }
-
-    /*
-    @Override
-    public List<WatchList> findAllWatchListsByUser(User currentUser) {
-        List<WatchList> allWatchLists = watchListRepository.findAll();
-        List<WatchList> userWatchlist = new ArrayList<>();
-        for(WatchList watchList: allWatchLists){
-            if (Objects.equals(watchList.getUserName(), currentUser.getUserName())){
-                userWatchlist.add(watchList);
-            }
-        }
-        return userWatchlist;
-    }
-
- */
 
     @Override
     public void deleteMovieById(int id) {
@@ -202,9 +186,6 @@ public class WatchListService implements WatchListServiceInterface{
     @Override
     public User findUserByUserName(String name) {
         List<User> allUsers = userRepository.findAll();
-        System.out.println("WatchListService: findUserByUsername: ");
-        System.out.println(name);
-        System.out.println(allUsers + "\n\n");
         for (User user: allUsers){
             if (Objects.equals(user.getUserName(), name)){
                 return user;
@@ -217,24 +198,12 @@ public class WatchListService implements WatchListServiceInterface{
     @Override
     public Role findRoleById(int id) {
         Optional<Role> roleOptional = roleRepository.findById(id);
-        System.out.println("Id von Role:" + id);
         Role role = roleOptional.orElse(null);
         return role;
     }
 
     @Override
     public List<WatchList> findAllWatchListsOfUser(int id) {
-        /*
-        User user = userRepository.findById(id).orElse(null);
-
-        System.out.println("findAllWatchlistOfUser method in watchlistservice");
-        System.out.println(user.toString());
-        return getWatchLists(id);
-
-         */
-        System.out.println("findAllWatchListsOfUser");
-        System.out.println(id);
-        System.out.println(watchListRepository.findById(1));
         return watchListRepository.findByUser(id);
     }
 
@@ -244,23 +213,6 @@ public class WatchListService implements WatchListServiceInterface{
     }
 
     public List<WatchList> getWatchLists(int id) {
-
-
-        /*
-        System.out.println("getWatchlistmethode in user");
-        System.out.println(this);
-
-        ArrayList<WatchList> watchListArrayList = new ArrayList<>();
-        WatchList watchList = new WatchList();
-        watchList.setUserName(this);
-        watchList.setName("Test");
-        watchListArrayList.add(watchList);
-        this.setWatchLists(watchListArrayList);
-
-        //System.out.println(watchLists);
-        System.out.println("getWatchListMethode nach sout");
-
-         */
         return watchListRepository.findByUser(id);
     }
 

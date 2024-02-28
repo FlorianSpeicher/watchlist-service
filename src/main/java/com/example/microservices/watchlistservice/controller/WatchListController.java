@@ -37,53 +37,23 @@ public class WatchListController extends BaseController implements WatchListCont
     }
 
 
-    @Before("execution(* com.example.microservices.watchlistservice.controller.WatchListController.*")
-    public void tokenSys(){
-        getCurrentUser().setToken(watchListService.validateAndUpdateToken(getCurrentUser().getToken()));
-        if (Objects.equals(getCurrentUser().getToken(), "NonValidToken")){
-            LoginControllerInterface.accessDeniedPage();
-        }
-    }
-
     @GetMapping("/showHome")
     public ModelAndView showHome(Model model){
-        System.out.println("davor");
         User user = getCurrentUser();
-        System.out.println(user.getUserName() + " " + user.getId() + "hier richtig in showHome");
-        System.out.println("danach");
-        //getCurrentUser().setToken(watchListService.generateToken());
         ModelAndView modelAndView = new ModelAndView("watchlist/home");
-        System.out.println("Zwischenschritt");
         List<WatchList> userWatchLists = watchListService.findAllWatchListsOfUser(user.getId());
-
         List<WatchList> allWatchLists = new ArrayList<>();
         WatchList watchList1 = new WatchList();
         WatchList watchList2 = new WatchList();
         allWatchLists.add(watchList1);
         allWatchLists.add(watchList2);
-
-        System.out.println("userWatchLists");
-        System.out.println(userWatchLists);
-        System.out.println("\n\n");
         modelAndView.addObject("watchLists", userWatchLists);
-        System.out.println("ende");
         return modelAndView;
     }
-
-    /*
-    @GetMapping("/showListOfAllMovies")
-    public String showListOfAllMovies(Model model){
-        List<Movie> allMovies = watchListService.findAllMovies();
-        model.addAttribute("movies", allMovies);
-        return "movie-list-indep";
-    }
-
-     */
 
     @GetMapping("/showListOfAllMovies")
     public ModelAndView showListOfAllMovies(){
         List<Movie> allMovies = watchListService.findAllMovies();
-        System.out.println("/showListOfAllMovies: " + allMovies + "\n\n");
         ModelAndView modelAndView = new ModelAndView("movie/movie-list-indep");
         modelAndView.addObject("movies", allMovies);
         return modelAndView;
@@ -119,7 +89,6 @@ public class WatchListController extends BaseController implements WatchListCont
         watchListService.addWatchLists(watchList);
         watchListService.saveUser(getCurrentUser());
         modelAndView.addObject("watchListId", watchList.getId());
-        //TODO schauen, ob das so geht um die id mitzugeben
         return modelAndView;
     }
 
@@ -134,10 +103,11 @@ public class WatchListController extends BaseController implements WatchListCont
     }
 
     @GetMapping("/deleteMovieFromWatchList")
-    public String deleteMovieFromWatchList(@RequestParam("watchListId") int watchListId, @RequestParam("movieId") int movieId){
+    public ModelAndView deleteMovieFromWatchList(@RequestParam("watchListId") int watchListId, @RequestParam("movieId") int movieId){
         //TODO Problem siehe 2 Methoden obendrüber
+        ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showSingleWatchList");
         watchListService.deleteMovieFromWatchList(watchListId, movieId);
-        return "redirect:/watchlist/showSingleWatchList" + watchListId;
+        return modelAndView;
     }
 
     @GetMapping("/deleteWatchList")
@@ -148,72 +118,81 @@ public class WatchListController extends BaseController implements WatchListCont
     }
 
     @GetMapping("/showMovieListToAddWatchList")
-    public String showMovieListToAddWatchList(@RequestParam("watchListId") int id, Model model){
+    public ModelAndView showMovieListToAddWatchList(@RequestParam("watchListId") int id){
+        ModelAndView modelAndView = new ModelAndView("movie/movie-list-attached");
         List<Movie> allMovies = watchListService.findAllMovies();
-        model.addAttribute("movies", allMovies);
-        model.addAttribute("watchListId", id);
-        return "movie/movie-list-attached";
+        modelAndView.addObject("movies", allMovies);
+        modelAndView.addObject("watchListId", id);
+        return modelAndView;
     }
 
     @GetMapping("/showSingleMovie")
-    public String showSingleMovie(@RequestParam("movieId") int id, Model model){
+    public ModelAndView showSingleMovie(@RequestParam("movieId") int id){
+        ModelAndView modelAndView = new ModelAndView("movie/movie");
         Movie movie = watchListService.findMovieById(id);
-        model.addAttribute("movie", movie);
-        return "movie/movie";
+        modelAndView.addObject("movie", movie);
+        return modelAndView;
     }
 
     @GetMapping("/showMovieAddPage")
-    public String showMovieAddPage(@RequestParam("movieId") int id, Model model){
-        model.addAttribute("movieId", id);
-        model.addAttribute("watchLists", watchListService.findAllWatchListsOfUser(id));
-        return "movie/adding-movie";
+    public ModelAndView showMovieAddPage(@RequestParam("movieId") int id){
+        ModelAndView modelAndView = new ModelAndView("Movie/adding-movie");
+        modelAndView.addObject("movieId", id);
+        modelAndView.addObject("watchLists", watchListService.findAllWatchListsOfUser(id));
+        return modelAndView;
     }
 
     @GetMapping("/addingMovieToWatchList")
-    public String addingMovieToWatchList(@RequestParam("movieId") int movieId, @RequestParam("watchListId") int watchListId){
+    public ModelAndView addingMovieToWatchList(@RequestParam("movieId") int movieId, @RequestParam("watchListId") int watchListId){
+        ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showSingleWatchList");
         WatchList watchList = watchListService.findWatchListById(watchListId);
        // watchList.addMovie(watchListService.findMovieById(movieId));
         MovieWatchListConnection connection = new MovieWatchListConnection(watchListId, movieId);
         watchListService.addMovieToWatchList(connection);
         watchListService.saveWatchList(watchList);
         //TODO RequestParam bei Übergabe beachten?
-        return "redirect:/watchlist/showSingleWatchList";
+        return modelAndView;
     }
 
     @GetMapping("/showCommentAddPage")
-    public String showCommentAddPage(@RequestParam("movieId") int id, Model model){
-        model.addAttribute("movieId", id);
-        return "movie/comment-write";
+    public ModelAndView showCommentAddPage(@RequestParam("movieId") int id){
+        ModelAndView modelAndView = new ModelAndView("movie/comment-write");
+        modelAndView.addObject("movieId", id);
+        return modelAndView;
     }
 
     @GetMapping("/addingCommentToMovie")
-    public String addingCommentToMovie(@RequestParam("movieId") int id,@RequestParam("comment") String comment){
+    public ModelAndView addingCommentToMovie(@RequestParam("movieId") int id,@RequestParam("comment") String comment){
+        ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showSingleMovie");
         Movie movie = watchListService.findMovieById(id);
         watchListService.addCommentToMovie(id, StringConverter.stringToCommentString(comment));
         watchListService.saveMovie(movie);
-        return "redirect:/watchlist/showSingleMovie";
+        return modelAndView;
     }
 
     @GetMapping("/showSingleRegisseur")
-    public String showSingleRegisseur(@RequestParam("regisseurId") int id, Model model){
+    public ModelAndView showSingleRegisseur(@RequestParam("regisseurId") int id){
+        ModelAndView modelAndView = new ModelAndView("regisseur/regisseur");
         Regisseur regisseur = watchListService.findRegisseurById(id);
-        model.addAttribute("regisseur", regisseur);
-        model.addAttribute("movies", watchListService.getMoviesByRegisseurId(id));
-        return "regisseur/regisseur";
+        modelAndView.addObject("regisseur", regisseur);
+        modelAndView.addObject("movies", watchListService.getMoviesByRegisseurId(id));
+        return modelAndView;
     }
 
     @GetMapping("/showSingleActor")
-    public String showSingleActor(@RequestParam("actorId") int id, Model model){
+    public ModelAndView showSingleActor(@RequestParam("actorId") int id){
+        ModelAndView modelAndView = new ModelAndView("actor/actor");
         Actor actor = watchListService.findActorById(id);
-        model.addAttribute("actor", actor);
-        model.addAttribute("movies", watchListService.getMoviesByActorId(id));
-        return "actor/actor";
+        modelAndView.addObject("actor", actor);
+        modelAndView.addObject("movies", watchListService.getMoviesByActorId(id));
+        return modelAndView;
     }
 
     @GetMapping("/deleteAccount")
-    public String deleteAccount(){
+    public ModelAndView deleteAccount(){
+        ModelAndView modelAndView = new ModelAndView("redirect:/");
         watchListService.deleteUser(getCurrentUser());
-        return "redirect:/";
+        return modelAndView;
     }
 
 }
