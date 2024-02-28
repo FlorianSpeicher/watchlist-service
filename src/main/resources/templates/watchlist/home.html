@@ -60,12 +60,12 @@
 		</thead>
 		
 		<tbody>
-			<tr th:each="tempWatchList : ${watchlists}">
+			<tr th:each="tempWatchList : ${watchLists}">
 			
 				<td th:text="${tempWatchList.name}"></td>
 
 				<td>
-					<a th:href="@{/watchlist/showSingleWatchList(watchlistId=${tempWatchList.id})}"
+					<a th:href="@{/watchlist/showSingleWatchList(watchListId=${tempWatchList.id})}"
 					class="btn btn-info btn-sm">Edit</a>
 					<a th:href="@{/watchlist/deleteWatchList(watchListId=${tempWatchList.id})}"
 					   class="btn btn-danger btn-sm"

@@ -3,16 +3,21 @@ package com.example.microservices.watchlistservice.controller;
 import com.example.microservices.watchlistservice.dto.Actor;
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.dto.Regisseur;
+import com.example.microservices.watchlistservice.entity.MovieWatchListConnection;
 import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.entity.WatchList;
 import com.example.microservices.watchlistservice.security.CustomUserDetailsService;
 import com.example.microservices.watchlistservice.service.WatchListService;
 import com.example.microservices.watchlistservice.utils.StringConverter;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -23,13 +28,14 @@ import java.util.Objects;
 @RequestMapping("/watchlist")
 public class WatchListController extends BaseController implements WatchListControllerInterface{
 
-    private final WatchListService watchListService;
+    @Autowired
+    private  WatchListService watchListService;
     private Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    public WatchListController(WatchListService watchListService){
+    public WatchListController(WatchListService watchListService) {
         super(watchListService);
-        this.watchListService = watchListService;
     }
+
 
     @Before("execution(* com.example.microservices.watchlistservice.controller.WatchListController.*")
     public void tokenSys(){
@@ -43,18 +49,23 @@ public class WatchListController extends BaseController implements WatchListCont
     public ModelAndView showHome(Model model){
         System.out.println("davor");
         User user = getCurrentUser();
-        System.out.println(user.getUserName() + "hier richtig in showHome");
+        System.out.println(user.getUserName() + " " + user.getId() + "hier richtig in showHome");
         System.out.println("danach");
         //getCurrentUser().setToken(watchListService.generateToken());
         ModelAndView modelAndView = new ModelAndView("watchlist/home");
         System.out.println("Zwischenschritt");
-        List<WatchList> userWatchLists = user.getWatchLists();
+        List<WatchList> userWatchLists = watchListService.findAllWatchListsOfUser(user.getId());
 
         List<WatchList> allWatchLists = new ArrayList<>();
-        allWatchLists.addAll(userWatchLists);
+        WatchList watchList1 = new WatchList();
+        WatchList watchList2 = new WatchList();
+        allWatchLists.add(watchList1);
+        allWatchLists.add(watchList2);
 
         System.out.println("userWatchLists");
-        modelAndView.addObject("watchlists", allWatchLists);
+        System.out.println(userWatchLists);
+        System.out.println("\n\n");
+        modelAndView.addObject("watchLists", userWatchLists);
         System.out.println("ende");
         return modelAndView;
     }
@@ -72,6 +83,7 @@ public class WatchListController extends BaseController implements WatchListCont
     @GetMapping("/showListOfAllMovies")
     public ModelAndView showListOfAllMovies(){
         List<Movie> allMovies = watchListService.findAllMovies();
+        System.out.println("/showListOfAllMovies: " + allMovies + "\n\n");
         ModelAndView modelAndView = new ModelAndView("movie/movie-list-indep");
         modelAndView.addObject("movies", allMovies);
         return modelAndView;
@@ -94,24 +106,31 @@ public class WatchListController extends BaseController implements WatchListCont
     }
 
     @GetMapping("/showWatchListAddPage")
-    public ModelAndView showWatchListAddPage(){
+    public ModelAndView showWatchListAddPage(WebRequest webRequest){
         ModelAndView modelAndView = new ModelAndView("watchlist/adding-watchlist");
+        modelAndView.addObject("watchList", new WatchList());
         return modelAndView;
     }
 
-    @GetMapping("/addingWatchListToUser")
-    public String addingWatchListToUser(@RequestParam("watchList") WatchList watchList){
-        getCurrentUser().addWatchLists(watchList);
+    @RequestMapping(value = "/addingWatchListToUser", method = RequestMethod.POST)
+    public ModelAndView addingWatchListToUser(@ModelAttribute("watchList") WatchList watchList, BindingResult bindingResult){
+        ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showSingleWatchList");
+        watchList.setUser(getCurrentUser().getId());
+        watchListService.addWatchLists(watchList);
         watchListService.saveUser(getCurrentUser());
+        modelAndView.addObject("watchListId", watchList.getId());
         //TODO schauen, ob das so geht um die id mitzugeben
-        return "redirect:/watchlist/showSingleWatchList" + watchList.getId();
+        return modelAndView;
     }
 
     @GetMapping("/showSingleWatchList")
-    public String showSingleWatchList(@RequestParam("watchListId") int id, Model model){
+    public ModelAndView showSingleWatchList(@RequestParam("watchListId") int id){
+       ModelAndView modelAndView = new ModelAndView("watchlist/single-watchlist");
         WatchList watchList = watchListService.findWatchListById(id);
-        model.addAttribute("watchList", watchList);
-        return "watchlist/single-watchlist";
+        modelAndView.addObject("watchList", watchList);
+        List<Movie> movieList = watchListService.findAllMoviesOfWatchList(id);
+        modelAndView.addObject("movies", movieList);
+        return modelAndView;
     }
 
     @GetMapping("/deleteMovieFromWatchList")
@@ -122,9 +141,10 @@ public class WatchListController extends BaseController implements WatchListCont
     }
 
     @GetMapping("/deleteWatchList")
-    public String deleteWatchList(@RequestParam("watchListId") int id){
+    public ModelAndView deleteWatchList(@RequestParam("watchListId") int id){
         watchListService.deleteWatchList(id);
-        return "redirect:/watchlist/showHome";
+        ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showHome");
+        return modelAndView;
     }
 
     @GetMapping("/showMovieListToAddWatchList")
@@ -145,7 +165,7 @@ public class WatchListController extends BaseController implements WatchListCont
     @GetMapping("/showMovieAddPage")
     public String showMovieAddPage(@RequestParam("movieId") int id, Model model){
         model.addAttribute("movieId", id);
-        model.addAttribute("watchLists", getCurrentUser().getWatchLists());
+        model.addAttribute("watchLists", watchListService.findAllWatchListsOfUser(id));
         return "movie/adding-movie";
     }
 
@@ -153,7 +173,8 @@ public class WatchListController extends BaseController implements WatchListCont
     public String addingMovieToWatchList(@RequestParam("movieId") int movieId, @RequestParam("watchListId") int watchListId){
         WatchList watchList = watchListService.findWatchListById(watchListId);
        // watchList.addMovie(watchListService.findMovieById(movieId));
-        watchList.addMovie(movieId);
+        MovieWatchListConnection connection = new MovieWatchListConnection(watchListId, movieId);
+        watchListService.addMovieToWatchList(connection);
         watchListService.saveWatchList(watchList);
         //TODO RequestParam bei Übergabe beachten?
         return "redirect:/watchlist/showSingleWatchList";

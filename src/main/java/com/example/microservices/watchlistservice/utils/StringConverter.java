@@ -55,6 +55,7 @@ public abstract class StringConverter {
    }
 
    public static List<Movie> stringToMovieList(String input){
+       System.out.println("stringToMovieList: " + input);
        List<Movie> movieList;
        try {
            movieList = om.readValue(input, new TypeReference<List<Movie>>() {});

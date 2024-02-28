@@ -18,14 +18,14 @@
 	<hr>
 	<h3>Watchlist-Application</h3>
 	<hr>
-	<h2 th:text="${watchlist.name}"></h2>
+	<h2 th:text="${watchList.name}"></h2>
 
 	<hr>
-	<a th:href="@{/watchlist/showMovieListToAddWatchList(watchListId=${watchlist.id})}"
+	<a th:href="@{/watchlist/showMovieListToAddWatchList(watchListId=${watchList.id})}"
 		class="btn btn-secondary btn-sm">
 		Add Movie
 	</a>
-	<a th:href="@{/watchlist/listAll}"
+	<a th:href="@{/watchlist/showHome}"
 	   class="btn btn-secondary btn-sm">
 		Home
 	</a>
@@ -47,7 +47,7 @@
 		</thead>
 		
 		<tbody>
-			<tr th:each="tempMovie : ${watchList.movie}">
+			<tr th:each="tempMovie : ${movies}">
 			
 				<td th:text="${tempMovie.title}"></td>
 				<td th:text="${tempMovie.length}"></td>

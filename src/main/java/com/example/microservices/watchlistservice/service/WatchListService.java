@@ -3,13 +3,17 @@ package com.example.microservices.watchlistservice.service;
 import com.example.microservices.watchlistservice.dto.Actor;
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.dto.Regisseur;
+import com.example.microservices.watchlistservice.entity.MovieWatchListConnection;
 import com.example.microservices.watchlistservice.entity.Role;
 import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.entity.WatchList;
+import com.example.microservices.watchlistservice.repositories.MovieWatchListConnectionRepository;
 import com.example.microservices.watchlistservice.repositories.RoleRepository;
 import com.example.microservices.watchlistservice.repositories.UserRepository;
 import com.example.microservices.watchlistservice.repositories.WatchListRepository;
 import static com.example.microservices.watchlistservice.utils.StringConverter.*;
+
+import com.example.microservices.watchlistservice.utils.watchlist.ValidWatchlistName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -27,14 +31,17 @@ public class WatchListService implements WatchListServiceInterface{
     private final WatchListRepository watchListRepository;
     private final RoleRepository roleRepository;
 
+    private final MovieWatchListConnectionRepository movieWatchListConnectionRepository;
+
     private final WebClient webClientMovie;
     private final WebClient webClientAuth;
 
     @Autowired
-    public WatchListService(UserRepository userRepository, WatchListRepository watchListRepository, RoleRepository roleRepository, WebClient.Builder webClientBuilderMovie, WebClient.Builder webClientBuilderAuth ){
+    public WatchListService(UserRepository userRepository, WatchListRepository watchListRepository, RoleRepository roleRepository, MovieWatchListConnectionRepository movieWatchListConnectionRepository, WebClient.Builder webClientBuilderMovie, WebClient.Builder webClientBuilderAuth ){
         this.userRepository = userRepository;
         this.watchListRepository = watchListRepository;
         this.roleRepository = roleRepository;
+        this.movieWatchListConnectionRepository = movieWatchListConnectionRepository;
         this.webClientMovie = webClientBuilderMovie.baseUrl("http://localhost:3307/movies").build();
         this.webClientAuth = webClientBuilderAuth.baseUrl("http://localhost:3308/auth/token").build();
     }
@@ -123,9 +130,24 @@ public class WatchListService implements WatchListServiceInterface{
 
     @Override
     public List<Movie> findAllMovies() {
+        System.out.println("findAllMovies(Service): "+
+                webClientMovie.get().uri("/list").retrieve().bodyToMono(String.class).block());
         return stringToMovieList(webClientMovie.get().uri("/list").retrieve().bodyToMono(String.class).block());
     }
 
+    @Override
+    public List<Movie> findAllMoviesOfWatchList(int id) {
+        List<MovieWatchListConnection> connections = movieWatchListConnectionRepository.findAll();
+        List<Movie> movieList = new ArrayList<>();
+        for (MovieWatchListConnection con: connections) {
+            if (con.getMovieId() == id){
+                movieList.add(findMovieById(id));
+            }
+        }
+        return movieList;
+    }
+
+    /*
     @Override
     public List<WatchList> findAllWatchListsByUser(User currentUser) {
         List<WatchList> allWatchLists = watchListRepository.findAll();
@@ -137,6 +159,8 @@ public class WatchListService implements WatchListServiceInterface{
         }
         return userWatchlist;
     }
+
+ */
 
     @Override
     public void deleteMovieById(int id) {
@@ -163,10 +187,10 @@ public class WatchListService implements WatchListServiceInterface{
         Optional<WatchList> watchListOptional = watchListRepository.findById(watchListId);
         WatchList watchList = watchListOptional.orElse(null);
        // List<Movie> allMovies = Objects.requireNonNull(watchList).getMovies();
-        List<Integer> allMovies = Objects.requireNonNull(watchList).getMovies();
+        //List<Integer> allMovies = Objects.requireNonNull(watchList).getMovies();
         Movie movie = findMovieById(movieId);
-        allMovies.remove(movie);
-        watchList.setMovies(allMovies);
+        //allMovies.remove(movie);
+        //watchList.setMovies(allMovies);
         watchListRepository.save(watchList);
     }
 
@@ -197,5 +221,54 @@ public class WatchListService implements WatchListServiceInterface{
         Role role = roleOptional.orElse(null);
         return role;
     }
+
+    @Override
+    public List<WatchList> findAllWatchListsOfUser(int id) {
+        /*
+        User user = userRepository.findById(id).orElse(null);
+
+        System.out.println("findAllWatchlistOfUser method in watchlistservice");
+        System.out.println(user.toString());
+        return getWatchLists(id);
+
+         */
+        System.out.println("findAllWatchListsOfUser");
+        System.out.println(id);
+        System.out.println(watchListRepository.findById(1));
+        return watchListRepository.findByUser(id);
+    }
+
+    @Override
+    public void addMovieToWatchList(MovieWatchListConnection connection) {
+        movieWatchListConnectionRepository.save(connection);
+    }
+
+    public List<WatchList> getWatchLists(int id) {
+
+
+        /*
+        System.out.println("getWatchlistmethode in user");
+        System.out.println(this);
+
+        ArrayList<WatchList> watchListArrayList = new ArrayList<>();
+        WatchList watchList = new WatchList();
+        watchList.setUserName(this);
+        watchList.setName("Test");
+        watchListArrayList.add(watchList);
+        this.setWatchLists(watchListArrayList);
+
+        //System.out.println(watchLists);
+        System.out.println("getWatchListMethode nach sout");
+
+         */
+        return watchListRepository.findByUser(id);
+    }
+
+    public void setWatchLists(List<WatchList> watchLists) {
+        watchListRepository.saveAll(watchLists);
+    }
+
+    @ValidWatchlistName
+    public void addWatchLists(WatchList watchList){watchListRepository.save(watchList);}
 
 }

@@ -19,14 +19,14 @@
 
     <p class="h4 mb-4">Adding a new Watchlist</p>
 
-    <a th:href="@{/watchlist/listAll}"
+    <a th:href="@{/watchlist/showHome}"
        class="btn btn-secondary btn-sm">
         Home
     </a>
     <hr>
 
-    <form action="#" th:action="@{/watchlist/addingWatchListToUser(watchList=${watchList})}"
-          th:object="${watchList}" method="post">
+    <form action="#" th:action="@{/watchlist/addingWatchListToUser}"
+          th:object="${watchList}" method="post" modelAttribute="watchList">
 
         <!-- Place for messages: error, alert etc ... -->
         <div class="form-group">
@@ -45,8 +45,7 @@
 
         <input type="hidden" th:field="*{id}"/>
         <input type="text" th:field="*{name}"
-               class="form-control mb-4 w-25" placeholder="Name">
-        <input type="hidden" th:field="*{movie}"/>
+               class="form-control mb-4 w-25" placeholder="Name"/>
         <button type="submit" class="btn btn-info col-2">Save</button>
     </form>
 </div>

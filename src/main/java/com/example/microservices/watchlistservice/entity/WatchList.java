@@ -2,30 +2,33 @@ package com.example.microservices.watchlistservice.entity;
 
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.utils.watchlist.ValidWatchlistName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "watchlists")
-@SuppressWarnings("unused")
 public class WatchList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
     @Column(name = "name")
     @ValidWatchlistName
     private String name;
 
-    @Column(name = "movies")
-    private List<Integer> movies;
+    @Column(name = "user_id")
+    private int user;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+
+
+
 
 
     public int getId() {
@@ -44,23 +47,16 @@ public class WatchList {
         this.name = name;
     }
 
-    public List<Integer> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(List<Integer> movies) {
-        this.movies = movies;
-    }
-
-    public void addMovie(int movie){
-        this.movies.add(movie);
-    }
-
-    public User getUserName() {
+    public int getUser() {
         return user;
     }
 
-    public void setUserName(User user) {
+    public void setUser(int user) {
         this.user = user;
     }
+
+
+
+
+
 }

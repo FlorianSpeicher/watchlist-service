@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -39,7 +40,7 @@ public class LoginController extends BaseController implements LoginControllerIn
     @GetMapping("/addUser")
     public ModelAndView addUser(WebRequest webRequest){
         ModelAndView modelAndView = new ModelAndView("login/registration");
-        modelAndView.addObject("user", new User("", "", "", "", 0, "", "", null, new Role()));
+        modelAndView.addObject("user", new User("", "", "", "", 0, "", "", new Role()));
         System.out.println("addUserMethod");
         System.out.println(modelAndView.getModel() + "Model aus addUser");
         return modelAndView;
@@ -59,7 +60,7 @@ public class LoginController extends BaseController implements LoginControllerIn
         newUser.setEmail(user.getEmail());
         newUser.setActive(1);
         newUser.setToken("");
-        newUser.setWatchLists(new ArrayList<>());
+        //newUser.setWatchLists(new ArrayList<>());
         System.out.println("Statement vor watchlistService");
         /*
         Role role = new Role();

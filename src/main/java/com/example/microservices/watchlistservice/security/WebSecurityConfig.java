@@ -96,10 +96,9 @@ public class WebSecurityConfig /*extends WebSecurityConfiguration*/ {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers(new AntPathRequestMatcher("/login"), new AntPathRequestMatcher("/addUser**"),
-                                new AntPathRequestMatcher("/authenticateUser")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/watchlist/**")).hasRole("USER")
+                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
                         .anyRequest().authenticated()
                         )
                 .formLogin(form ->

@@ -1,17 +1,20 @@
 package com.example.microservices.watchlistservice.entity;
 
+import com.example.microservices.watchlistservice.repositories.WatchListRepository;
 import com.example.microservices.watchlistservice.utils.password.ValidPassword;
 import com.example.microservices.watchlistservice.utils.username.ValidUserName;
 import com.example.microservices.watchlistservice.utils.watchlist.ValidWatchlistName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "user")
-@SuppressWarnings("unused")
 public class User {
 
     @Id
@@ -56,9 +59,6 @@ public class User {
 
     @Column(name = "token")
     private String token;
-
-    @OneToMany( mappedBy = "user")
-    private List<WatchList> watchLists = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "role_id")
@@ -127,16 +127,6 @@ public class User {
         this.email = email;
     }
 
-    public List<WatchList> getWatchLists() {
-        return watchLists;
-    }
-
-    public void setWatchLists(List<WatchList> watchLists) {
-        this.watchLists = watchLists;
-    }
-
-    @ValidWatchlistName
-    public void addWatchLists(WatchList watchList){this.watchLists.add(watchList);}
 
     public String getToken() {
         return token;
@@ -166,7 +156,7 @@ public class User {
         this.active = active;
     }
 
-    public User(String firstName, String lastName, String userName, String password, int age, String email, String token, List<WatchList> watchLists, Role roles) {
+    public User(String firstName, String lastName, String userName, String password, int age, String email, String token, Role roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -174,12 +164,11 @@ public class User {
         this.age = age;
         this.email = email;
         this.token = token;
-        this.watchLists = watchLists;
         this.roles = roles;
     }
 
     public User(){
-        this("unknown", "unknown", "unknown", "0000", 0, "unknown@unknown.com", null , new ArrayList<>(), new Role());
+        this("unknown", "unknown", "unknown", "0000", 0, "unknown@unknown.com", null , new Role());
     }
 
 }

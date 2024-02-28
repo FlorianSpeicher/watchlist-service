@@ -20,7 +20,7 @@
     <hr>
     <h5>List of all movie</h5>
     <br>
-    <a th:href="@{/watchlist/listAll}"
+    <a th:href="@{/watchlist/showHome}"
        class="btn btn-secondary btn-sm">
         Home
     </a>
@@ -37,7 +37,9 @@
         <tbody>
         <tr th:each="tempRegisseur : ${regisseurs}">
 
-            <td th:text="${tempRegisseur.firstName}" th:href="@{/watchlist/showSingleRegisseur(regisseurId=${tempRegisseur.id})}"></td>
+            <td>
+                <a th:href="@{/watchlist/showSingleRegisseur(regisseurId=${tempRegisseur.id})}" th:text="${tempRegisseur.firstName}"/>
+            </td>
             <td th:text="${tempRegisseur.lastName}"></td>
         </tr>
         </tbody>
