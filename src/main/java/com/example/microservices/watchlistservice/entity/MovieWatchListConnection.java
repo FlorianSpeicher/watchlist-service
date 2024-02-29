@@ -8,18 +8,18 @@ public class MovieWatchListConnection {
 
     @Id
     @GeneratedValue
-    @JoinColumn(name = "id")
-    private int watchlistId;
+    @JoinColumn(name = "id", columnDefinition = "watchlist_id")
+    private int watchListId;
 
     @Column(name = "movie_id")
     private int movieId;
 
-    public int getWatchlistId() {
-        return watchlistId;
+    public int getWatchListId() {
+        return watchListId;
     }
 
-    public void setWatchlistId(int watchlistId) {
-        this.watchlistId = watchlistId;
+    public void setWatchListId(int watchListId) {
+        this.watchListId = watchListId;
     }
 
     public int getMovieId() {
@@ -31,8 +31,8 @@ public class MovieWatchListConnection {
     }
 
 
-    public MovieWatchListConnection(int watchlistId, int movieId) {
-        this.watchlistId = watchlistId;
+    public MovieWatchListConnection(int watchListId, int movieId) {
+        this.watchListId = watchListId;
         this.movieId = movieId;
     }
 

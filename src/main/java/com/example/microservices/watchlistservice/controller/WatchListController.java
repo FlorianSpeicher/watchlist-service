@@ -104,7 +104,6 @@ public class WatchListController extends BaseController implements WatchListCont
 
     @GetMapping("/deleteMovieFromWatchList")
     public ModelAndView deleteMovieFromWatchList(@RequestParam("watchListId") int watchListId, @RequestParam("movieId") int movieId){
-        //TODO Problem siehe 2 Methoden obendrüber
         ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showSingleWatchList");
         watchListService.deleteMovieFromWatchList(watchListId, movieId);
         return modelAndView;
@@ -136,21 +135,17 @@ public class WatchListController extends BaseController implements WatchListCont
 
     @GetMapping("/showMovieAddPage")
     public ModelAndView showMovieAddPage(@RequestParam("movieId") int id){
-        ModelAndView modelAndView = new ModelAndView("Movie/adding-movie");
+        ModelAndView modelAndView = new ModelAndView("movie/adding-movie");
         modelAndView.addObject("movieId", id);
-        modelAndView.addObject("watchLists", watchListService.findAllWatchListsOfUser(id));
+        modelAndView.addObject("watchLists", watchListService.findAllWatchListsOfUser(getCurrentUser().getId()));
         return modelAndView;
     }
 
     @GetMapping("/addingMovieToWatchList")
     public ModelAndView addingMovieToWatchList(@RequestParam("movieId") int movieId, @RequestParam("watchListId") int watchListId){
         ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showSingleWatchList");
-        WatchList watchList = watchListService.findWatchListById(watchListId);
-       // watchList.addMovie(watchListService.findMovieById(movieId));
-        MovieWatchListConnection connection = new MovieWatchListConnection(watchListId, movieId);
-        watchListService.addMovieToWatchList(connection);
-        watchListService.saveWatchList(watchList);
-        //TODO RequestParam bei Übergabe beachten?
+        watchListService.addMovieToWatchList(new MovieWatchListConnection(watchListId, movieId));
+        modelAndView.addObject("watchListId", watchListId);
         return modelAndView;
     }
 

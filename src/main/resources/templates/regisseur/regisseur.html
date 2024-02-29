@@ -19,20 +19,21 @@
     <hr>
     <h3>Watchlist-Application</h3>
     <hr>
-    <a th:href="@{/watchlist/showRegisseurList"
+    <a th:href="@{/watchlist/showRegisseurList}"
        class="btn btn-secondary btn-sm">
         Back to régisseur list
     </a>
-    <a th:href="@{/watchlist/listAll}"
+    <a th:href="@{/watchlist/showHome}"
        class="btn btn-secondary btn-sm">
         Home
     </a>
     <hr>
+    <a>First name: </a>
     <a th:text="${regisseur.firstName}"></a>
     <br>
+    <a>Last name: </a>
     <a th:text="${regisseur.lastName}"></a>
     <hr>
-
 
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
@@ -42,9 +43,11 @@
         </thead>
 
         <tbody>
-        <tr th:each="tempMovie : ${movie}">
+        <tr th:each="tempMovie : ${movies}">
 
-            <td th:text="${tempMovie.title}" th:href="@{/watchlist/showSingleMovie(movieId=${tempMovie.id})}"></td>
+            <td>
+                <a th:text="${tempMovie.title}" th:href="@{/watchlist/showSingleMovie(movieId=${tempMovie.id})}"/>
+            </td>
 
         </tr>
         </tbody>

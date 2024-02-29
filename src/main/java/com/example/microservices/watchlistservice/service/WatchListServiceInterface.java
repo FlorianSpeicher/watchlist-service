@@ -68,4 +68,6 @@ public interface WatchListServiceInterface {
     List<Movie> findAllMoviesOfWatchList(int id);
 
     void addMovieToWatchList(MovieWatchListConnection connection);
+
+    User findUserByEmail(String name);
 }

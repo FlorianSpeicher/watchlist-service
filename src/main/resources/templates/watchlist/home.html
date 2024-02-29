@@ -75,10 +75,12 @@
 			</tr>
 		</tbody>		
 	</table>
+	<hr>
 
-	<form action="#" th:action="@{/deleteAccount}" method=get>
-		<a class="btn btn-warning btn-sm">Delete Account</a>
-	</form>
+	<a th:href="@{/watchlist/deleteAccount}"
+	   class="btn btn-warning btn-sm">
+		Delete Account
+	</a>
 
 </div>
 

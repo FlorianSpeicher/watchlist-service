@@ -19,11 +19,11 @@
     <hr>
     <h3>Watchlist-Application</h3>
     <hr>
-    <a th:href="@{/watchlist/listSingleMovieById(movieId=${movieId})}"
+    <a th:href="@{/watchlist/showSingleMovie(movieId=${movieId})}"
        class="btn btn-secondary btn-sm">
         Back
     </a>
-    <a th:href="@{/watchlist/listAll}"
+    <a th:href="@{/watchlist/showHome}"
        class="btn btn-secondary btn-sm">
         Home
     </a>
@@ -39,12 +39,12 @@
         </thead>
 
         <tbody>
-        <tr th:each="tempWatchList : ${watchlists}">
+        <tr th:each="tempWatchList : ${watchLists}">
 
             <td th:text="${tempWatchList.name}"></td>
 
             <td>
-                <a th:href="@{/watchlist/addingMovieToWatchList(movieId=${movieId}, watchlistId=${watchlist.id})}"
+                <a th:href="@{/watchlist/addingMovieToWatchList(movieId=${movieId}, watchListId=${tempWatchList.id})}"
                    class="btn btn-info btn-sm">Add</a>
             </td>
         </tr>

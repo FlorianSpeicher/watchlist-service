@@ -74,7 +74,9 @@ public class LoginController extends BaseController implements LoginControllerIn
     @GetMapping("/tokenLoginSet")
     public ModelAndView tokenLoginSet(){
         ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showHome");
-        getCurrentUser().setToken(watchListService.generateToken());
+        User current = watchListService.findUserByUserName(getCurrentUser().getUserName());
+        current.setToken(watchListService.generateToken());
+        watchListService.saveUser(current);
         return modelAndView;
     }
 

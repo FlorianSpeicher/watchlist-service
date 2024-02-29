@@ -168,14 +168,12 @@ public class WatchListService implements WatchListServiceInterface{
 
     @Override
     public void deleteMovieFromWatchList(int watchListId, int movieId) {
-        Optional<WatchList> watchListOptional = watchListRepository.findById(watchListId);
-        WatchList watchList = watchListOptional.orElse(null);
-       // List<Movie> allMovies = Objects.requireNonNull(watchList).getMovies();
-        //List<Integer> allMovies = Objects.requireNonNull(watchList).getMovies();
-        Movie movie = findMovieById(movieId);
-        //allMovies.remove(movie);
-        //watchList.setMovies(allMovies);
-        watchListRepository.save(watchList);
+        List<MovieWatchListConnection> list = movieWatchListConnectionRepository.findAll();
+        for (MovieWatchListConnection con: list) {
+            if ((con.getWatchListId() == watchListId && con.getMovieId() == movieId)){
+                movieWatchListConnectionRepository.delete(con);
+            }
+        }
     }
 
     @Override
@@ -209,7 +207,20 @@ public class WatchListService implements WatchListServiceInterface{
 
     @Override
     public void addMovieToWatchList(MovieWatchListConnection connection) {
+        System.out.println("addMovieToWatchList wird aufgerufen im Service");
         movieWatchListConnectionRepository.save(connection);
+    }
+
+    @Override
+    public User findUserByEmail(String name) {
+        List<User> allUsers = userRepository.findAll();
+        for (User user: allUsers){
+            if (Objects.equals(user.getEmail(), name)){
+                return user;
+            }
+        }
+
+        return null;
     }
 
     public List<WatchList> getWatchLists(int id) {

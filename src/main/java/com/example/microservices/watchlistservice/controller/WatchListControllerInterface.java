@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @SuppressWarnings("unused")
 public interface WatchListControllerInterface {
-    void tokenSys();
+    //void tokenSys();
     ModelAndView showHome(Model model);
     ModelAndView showListOfAllMovies();
     ModelAndView showActorList();
