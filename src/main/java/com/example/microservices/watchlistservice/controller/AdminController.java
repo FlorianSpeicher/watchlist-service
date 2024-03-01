@@ -42,10 +42,8 @@ public class AdminController extends BaseController implements AdminControllerIn
         SimpleGrantedAuthority auth = new SimpleGrantedAuthority(ROLE_ADMIN.name());
 
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(auth)){
-            System.out.println("Der Fall in dem man Admin hat");
             modelAndView.setViewName("admin/admin-page");
         } else {
-            System.out.println("Der Fall in dem man User ist");
             modelAndView.setViewName("redirect:/watchlist/showHome");
         }
 

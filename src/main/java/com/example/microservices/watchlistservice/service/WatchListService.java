@@ -16,6 +16,7 @@ import static com.example.microservices.watchlistservice.utils.StringConverter.*
 
 import com.example.microservices.watchlistservice.utils.watchlist.ValidWatchlistName;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;

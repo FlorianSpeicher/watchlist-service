@@ -14,7 +14,7 @@ public class Role {
     private int id;
 
     @Column(name = "role")
-    private Roles role;
+    private String role;
 
     @OneToMany(mappedBy = "roles")
     private List<User> users;
@@ -27,12 +27,12 @@ public class Role {
         this.id = id;
     }
 
-    public Roles getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = Roles.valueOf(role);
+    public void setRole(Roles role) {
+        this.role = role.name();
     }
 
     public List<User> getUsers() {
@@ -44,7 +44,7 @@ public class Role {
     }
 
     public Role() {
-        this.role = Roles.ROLE_USER;
+        this.role = Roles.ROLE_USER.name();
     }
 
 }
