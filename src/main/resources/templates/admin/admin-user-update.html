@@ -28,8 +28,8 @@
         Back to admin page
     </a>
 
-    <form action="#" th:action="@{/watchlist/adminUpdateUser(user=${user})}"
-          th:object="${user}" method="post">
+    <form action="#" th:action="@{/admin/adminUpdateUser}"
+          th:object="${user}" method="post" modelAttribute="user">
 
         <input type="hidden" th:field="*{id}"/>
         <input type="text" th:field="*{userName}"

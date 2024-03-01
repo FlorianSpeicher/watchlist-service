@@ -55,7 +55,7 @@
 				<td th:text="${tempMovie.ageRestriction}"></td>
 				<td th:text="${tempMovie.regisseur}"></td>
 				<td th:text="${tempMovie.reviews}"></td>
-				<td th:text="${tempMovie.actors}"></td>
+				<td th:text="${tempMovie.actor}"></td>
 				<td>
 					<a th:href="@{/watchlist/deleteMovieFromWatchList(watchListId=${watchList.id}, movieId=${tempMovie.id})}"
 					   class="btn btn-danger btn-sm"

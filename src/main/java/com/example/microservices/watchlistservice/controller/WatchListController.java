@@ -3,6 +3,7 @@ package com.example.microservices.watchlistservice.controller;
 import com.example.microservices.watchlistservice.dto.Actor;
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.dto.Regisseur;
+import com.example.microservices.watchlistservice.dto.Review;
 import com.example.microservices.watchlistservice.entity.MovieWatchListConnection;
 import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.entity.WatchList;
@@ -104,8 +105,9 @@ public class WatchListController extends BaseController implements WatchListCont
 
     @GetMapping("/deleteMovieFromWatchList")
     public ModelAndView deleteMovieFromWatchList(@RequestParam("watchListId") int watchListId, @RequestParam("movieId") int movieId){
-        ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showSingleWatchList");
+        ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showSingleWatchList?watchListId=" + watchListId);
         watchListService.deleteMovieFromWatchList(watchListId, movieId);
+        //TODO Requestparam showSingleWatchList watchListId hinzufügen
         return modelAndView;
     }
 
@@ -153,14 +155,15 @@ public class WatchListController extends BaseController implements WatchListCont
     public ModelAndView showCommentAddPage(@RequestParam("movieId") int id){
         ModelAndView modelAndView = new ModelAndView("movie/comment-write");
         modelAndView.addObject("movieId", id);
+        modelAndView.addObject("review", new Review());
         return modelAndView;
     }
 
-    @GetMapping("/addingCommentToMovie")
-    public ModelAndView addingCommentToMovie(@RequestParam("movieId") int id,@RequestParam("comment") String comment){
-        ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showSingleMovie");
+    @RequestMapping(value =  "/addingCommentToMovie", method = RequestMethod.POST)
+    public ModelAndView addingCommentToMovie(@RequestParam("movieId") int id,@ModelAttribute("review") Review review, BindingResult bindingResult){
+        ModelAndView modelAndView = new ModelAndView("redirect:/watchlist/showSingleMovie?movieId=" + id);
         Movie movie = watchListService.findMovieById(id);
-        watchListService.addCommentToMovie(id, StringConverter.stringToCommentString(comment));
+        watchListService.addCommentToMovie(id, review);
         watchListService.saveMovie(movie);
         return modelAndView;
     }

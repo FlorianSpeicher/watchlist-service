@@ -48,4 +48,14 @@ public class TokenValidationAspect {
             httpServletResponse.sendRedirect("/logout");
         }
     }
+
+    @Before("execution(* com.example.microservices.watchlistservice.controller.AdminController.*(..))")
+    public void tokenSysadmin() throws Exception {
+        User current = getcurrentUser();
+        current.setToken(watchListService.validateAndUpdateToken(current.getToken()));
+        watchListService.saveUser(current);
+        if (Objects.equals(getcurrentUser().getToken(), "nonValidToken")){
+            httpServletResponse.sendRedirect("/logout");
+        }
+    }
 }

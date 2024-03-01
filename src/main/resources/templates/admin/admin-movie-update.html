@@ -28,8 +28,8 @@
     Back to admin page
   </a>
 
-  <form action="#" th:action="@{/admin/adminUpdateMovie(movie=${movie})}"
-        th:object="${movie}" method="post">
+  <form action="#" th:action="@{/admin/adminUpdateMovie}"
+        th:object="${movie}" method="post" modelAttribute="movie">
     <input type="hidden" th:field="*{id}"/>
     <input type="text" th:field="*{title}"
            class="form-control mb-4 w-25" placeholder="Title">
@@ -43,7 +43,7 @@
            class="form-control mb-4 w-25" placeholder="Regisseur">
     <input type="text" th:field="*{reviews}"
            class="form-control mb-4 w-25" placeholder="Reviews">
-    <input type="text" th:field="*{actors}"
+    <input type="text" th:field="*{actor}"
            class="form-control mb-4 w-25" placeholder="Actors">
     <button type="submit" class="btn btn-warning col-2">Save</button>
   </form>

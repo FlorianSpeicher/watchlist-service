@@ -40,7 +40,7 @@
     </thead>
 
     <tbody>
-    <tr th:each="tempMovie : ${movie}">
+    <tr th:each="tempMovie : ${movies}">
 
       <td th:text="${tempMovie.title}"></td>
       <td th:text="${tempMovie.length}"></td>
@@ -48,7 +48,7 @@
       <td th:text="${tempMovie.ageRestriction}"></td>
       <td th:text="${tempMovie.regisseur}"></td>
       <td th:text="${tempMovie.reviews}"></td>
-      <td th:text="${tempMovie.actors}"></td>
+      <td th:text="${tempMovie.actor}"></td>
       <td>
         <a th:href="@{/admin/adminShowUpdateMovie(movieId=${tempMovie.id})}"
            class="btn btn-warning btn-sm">

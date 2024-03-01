@@ -3,14 +3,11 @@ package com.example.microservices.watchlistservice.utils;
 import com.example.microservices.watchlistservice.dto.Actor;
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.dto.Regisseur;
-import com.fasterxml.jackson.core.JsonParser;
+import com.example.microservices.watchlistservice.dto.Review;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysql.cj.xdevapi.JsonArray;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class StringConverter {
@@ -50,8 +47,8 @@ public abstract class StringConverter {
        return regisseurList;
    }
 
-   public static String stringToCommentString(String input){
-       return "{\"comment\":\"" + input + "\"}";
+   public static String reviewToCommentString(Review input){
+       return "{\"comment\":\"" + input.getComment() + "\"}";
    }
 
    public static List<Movie> stringToMovieList(String input){

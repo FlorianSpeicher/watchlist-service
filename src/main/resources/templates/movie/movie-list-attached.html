@@ -18,11 +18,11 @@
     <hr>
     <h3>Watchlist-Application</h3>
     <hr>
-    <a th:href="@{/watchlist/editWatchList(watchListId=${watchListId})}"
+    <a th:href="@{/watchlist/showSingleWatchList(watchListId=${watchListId})}"
        class="btn btn-secondary btn-sm">
         Back
     </a>
-    <a th:href="@{/watchlist/listAll}"
+    <a th:href="@{/watchlist/showHome}"
        class="btn btn-secondary btn-sm">
         Home
     </a>
@@ -43,17 +43,19 @@
         </thead>
 
         <tbody>
-        <tr th:each="tempMovie : ${movie}">
+        <tr th:each="tempMovie : ${movies}">
 
-            <td th:text="${tempMovie.title}" th:href="@{/watchlist/showSingleMovie(movieId=${tempMovie.id})}"></td>
+            <td>
+                <a th:text="${tempMovie.title}" th:href="@{/watchlist/showSingleMovie(movieId=${tempMovie.id})}"/>
+            </td>
             <td th:text="${tempMovie.length}"></td>
             <td th:text="${tempMovie.episodes}"></td>
             <td th:text="${tempMovie.ageRestriction}"></td>
             <td th:text="${tempMovie.regisseur}"></td>
             <td th:text="${tempMovie.reviews}"></td>
-            <td th:text="${tempMovie.actors}"></td>
+            <td th:text="${tempMovie.actor}"></td>
             <td>
-                <a th:href="@{/watchlist/addMovieToWatchList(movieId=${tempMovie.id}, watchListId=${watchListId})}"
+                <a th:href="@{/watchlist/addingMovieToWatchList(movieId=${tempMovie.id}, watchListId=${watchListId})}"
                    class="btn btn-info btn-sm">
                     Add</a>
             </td>

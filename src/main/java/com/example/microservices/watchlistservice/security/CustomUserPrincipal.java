@@ -23,7 +23,7 @@ public class CustomUserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> list = new ArrayList<>();
         list.add(new SimpleGrantedAuthority(Roles.ROLE_USER.name()));
-        list.add(new SimpleGrantedAuthority(Roles.ROLE_ADMIN.name()));
+        //list.add(new SimpleGrantedAuthority(Roles.ROLE_ADMIN.name()));
 
         return list;
     }

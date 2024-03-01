@@ -107,8 +107,9 @@ public class StringConverterTest {
     @Order(4)
     void stringToCommentStringTest(){
         String input = "Dies ist ein Kommentar";
+        Review review = new Review("Dies ist ein Kommentar");
         String soll = "{\"comment\":\"Dies ist ein Kommentar\"}";
-        String result = stringToCommentString(input);
+        String result = reviewToCommentString(review);
         assertEquals(soll, result);
     }
 

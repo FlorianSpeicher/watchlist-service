@@ -23,14 +23,14 @@
        class="btn btn-secondary btn-sm">
         Back
     </a>
-    <a th:href="@{/watchlist/listAll}"
+    <a th:href="@{/watchlist/showHome}"
        class="btn btn-secondary btn-sm">
         Home
     </a>
     <hr>
 
-    <form action="#" th:action="@{/watchlist/addingCommentToMovie(movieId=${movieId}, comment=${comment})}"
-          th:object="${movie}" method="post">
+    <form action="#" th:action="@{/watchlist/addingCommentToMovie(movieId=${movieId})}"
+          th:object="${review}" method="post">
         <input type="text" th:field="*{comment}"
                class="form-control mb-4 w-25" placeholder="Comment">
         <button type="submit" class="btn btn-info col-2">Save</button>

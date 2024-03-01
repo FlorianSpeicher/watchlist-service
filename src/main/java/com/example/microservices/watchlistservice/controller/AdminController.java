@@ -2,15 +2,18 @@ package com.example.microservices.watchlistservice.controller;
 
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.entity.Role;
+import com.example.microservices.watchlistservice.entity.Roles;
 import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.service.EntityService;
 import com.example.microservices.watchlistservice.service.WatchListService;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,92 +24,99 @@ import static com.example.microservices.watchlistservice.entity.Roles.*;
 @RequestMapping("/admin")
 public class AdminController extends BaseController implements AdminControllerInterface{
 
+    @Autowired
     private WatchListService watchListService;
+
+    @Autowired
     private EntityService entityService;
 
     public AdminController(WatchListService watchListService) {
         super(watchListService);
     }
 
-    @Override
-    @Before("execution(* com.example.microservices.watchlistservice.controller.AdminController.*")
-    public void tokenSys(){
-        getCurrentUser().setToken(watchListService.validateAndUpdateToken(getCurrentUser().getToken()));
-        if (Objects.equals(getCurrentUser().getToken(), "NonValidToken")){
-            LoginControllerInterface.accessDeniedPage();
-        }
-    }
 
     @Override
     @GetMapping("/showAdminPage")
-    public String showAdminPage(){
-        Role role = new Role();
-        role.setRole("ROLE_ADMIN");
-        User user = new User();
-        user.setRoles(role);
-        if (getCurrentUser().getRoles().equals(user.getRoles())){
-            return "/admin/admin-page";
+    public ModelAndView showAdminPage(){
+        ModelAndView modelAndView = new ModelAndView();
+        SimpleGrantedAuthority auth = new SimpleGrantedAuthority(ROLE_ADMIN.name());
+
+        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(auth)){
+            System.out.println("Der Fall in dem man Admin hat");
+            modelAndView.setViewName("admin/admin-page");
+        } else {
+            System.out.println("Der Fall in dem man User ist");
+            modelAndView.setViewName("redirect:/watchlist/showHome");
         }
-        return "redirect:/watchlist/showHome";
+
+        return modelAndView;
     }
 
     @Override
     @GetMapping("/adminShowUserList")
-    public String adminShowUserList(Model model){
+    public ModelAndView adminShowUserList(){
+        ModelAndView modelAndView = new ModelAndView("admin/admin-user");
         List<User> allUsers = watchListService.findAllUsers();
-        model.addAttribute("users", allUsers);
-        return "/admin/admin-user";
+        modelAndView.addObject("users", allUsers);
+        return modelAndView;
     }
 
     @Override
     @GetMapping("/adminShowMovieList")
-    public String adminShowMovieList(Model model){
+    public ModelAndView adminShowMovieList(){
+        ModelAndView modelAndView = new ModelAndView("admin/admin-movie");
         List<Movie> allMovies = watchListService.findAllMovies();
-        model.addAttribute("movies", allMovies);
-        return "/admin/admin-movie";
+        modelAndView.addObject("movies", allMovies);
+        return modelAndView;
     }
 
     @Override
     @GetMapping("/adminShowUpdateUser")
-    public String adminShowUpdateUser(@RequestParam("userId") int id, Model model){
+    public ModelAndView adminShowUpdateUser(@RequestParam("userId") int id){
+        ModelAndView modelAndView = new ModelAndView("admin/admin-user-update");
         User user = watchListService.findUserById(id);
-        model.addAttribute("user", user);
-        return "/admin/admin-user-update";
+        modelAndView.addObject("user", user);
+        return modelAndView;
     }
 
     @Override
     @GetMapping("/adminShowUpdateMovie")
-    public String adminShowUpdateMovie(@RequestParam("movieId") int id, Model model){
+    public ModelAndView adminShowUpdateMovie(@RequestParam("movieId") int id){
+        ModelAndView modelAndView = new ModelAndView("admin/admin-movie-update");
         Movie movie = watchListService.findMovieById(id);
-        model.addAttribute("movie", movie);
-        return "/admin/admin-movie-update";
+        modelAndView.addObject("movie", movie);
+        return modelAndView;
     }
 
     @Override
-    @GetMapping("/adminUpdateUser")
-    public String adminUpdateUser(@RequestParam("user") User user){
+    @RequestMapping(value = "/adminUpdateUser", method = RequestMethod.POST)
+    public ModelAndView adminUpdateUser(@ModelAttribute("user") User user, BindingResult bindingResult){
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/adminShowUserList");
         entityService.saveUser(user);
-        return "redirect:/admin/adminShowUserList";
+        return modelAndView;
     }
 
     @Override
-    @GetMapping("/adminUpdateMovie")
-    public String adminUpdateMovie(@RequestParam("movie") Movie movie){
+    @RequestMapping(value = "/adminUpdateMovie", method = RequestMethod.POST)
+    public ModelAndView adminUpdateMovie(@ModelAttribute("movie") Movie movie, BindingResult bindingResult){
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/adminShowMovieList");
         watchListService.saveMovie(movie);
-        return "redirect:/admin/adminShowMovieList";
+        return modelAndView;
     }
 
     @Override
     @GetMapping("/adminDeleteMovie")
-    public String adminDeleteMovie(@RequestParam("movieId") int id){
+    public ModelAndView adminDeleteMovie(@RequestParam("movieId") int id){
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/adminShowMovieList");
         watchListService.deleteMovieById(id);
-        return "redirect:/admin/adminShowMovieList";
+        return modelAndView;
     }
 
     @Override
     @GetMapping("/adminDeleteUser")
-    public String adminDeleteUser(@RequestParam("userId") int id){
+    public ModelAndView adminDeleteUser(@RequestParam("userId") int id){
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/adminShowUserList");
         watchListService.deleteUserById(id);
-        return "redirect:/admin/adminShowUserList";
+        return modelAndView;
     }
 }

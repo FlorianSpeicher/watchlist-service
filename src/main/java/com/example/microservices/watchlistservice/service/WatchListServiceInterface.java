@@ -3,6 +3,7 @@ package com.example.microservices.watchlistservice.service;
 import com.example.microservices.watchlistservice.dto.Actor;
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.dto.Regisseur;
+import com.example.microservices.watchlistservice.dto.Review;
 import com.example.microservices.watchlistservice.entity.MovieWatchListConnection;
 import com.example.microservices.watchlistservice.entity.Role;
 import com.example.microservices.watchlistservice.entity.User;
@@ -39,7 +40,7 @@ public interface WatchListServiceInterface {
 
     List<User> findAllUsers();
 
-    void addCommentToMovie(int id, String comment);
+    void addCommentToMovie(int id, Review comment);
 
     User findUserById(int id);
 

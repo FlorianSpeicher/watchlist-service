@@ -39,7 +39,7 @@
         <tbody>
         <tr th:each="tempUser : ${users}">
 
-            <td th:text="${tempUser.username}"></td>
+            <td th:text="${tempUser.userName}"></td>
             <td th:text="${tempUser.firstName}"></td>
             <td th:text="${tempUser.lastName}"></td>
             <td th:text="${tempUser.age}"></td>
@@ -48,7 +48,7 @@
                 <a th:href="@{/admin/adminShowUpdateUser(userId=${tempUser.id})}"
                    class="btn btn-warning btn-sm">
                     Update</a>
-                <a th:href="@{/watchlist/adminDeleteUser(userId=${tempUser.id})}"
+                <a th:href="@{/admin/adminDeleteUser(userId=${tempUser.id})}"
                    class="btn btn-danger btn-sm">
                     Delete</a>
             </td>

@@ -1,5 +1,6 @@
 package com.example.microservices.watchlistservice.controller;
 
+import com.example.microservices.watchlistservice.dto.Review;
 import com.example.microservices.watchlistservice.entity.WatchList;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +26,7 @@ public interface WatchListControllerInterface {
     ModelAndView showMovieAddPage(@RequestParam("movieId") int id);
     ModelAndView addingMovieToWatchList(@RequestParam("movieId") int movieId, @RequestParam("watchListId") int watchListId);
     ModelAndView showCommentAddPage(@RequestParam("movieId") int id);
-    ModelAndView addingCommentToMovie(@RequestParam("movieId") int id,@RequestParam("comment") String comment);
+    ModelAndView addingCommentToMovie(@RequestParam("movieId") int id, @ModelAttribute("review") Review review, BindingResult bindingResult);
     ModelAndView showSingleRegisseur(@RequestParam("regisseurId") int id);
     ModelAndView showSingleActor(@RequestParam("actorId") int id);
     ModelAndView deleteAccount();

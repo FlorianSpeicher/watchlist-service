@@ -3,6 +3,7 @@ package com.example.microservices.watchlistservice.service;
 import com.example.microservices.watchlistservice.dto.Actor;
 import com.example.microservices.watchlistservice.dto.Movie;
 import com.example.microservices.watchlistservice.dto.Regisseur;
+import com.example.microservices.watchlistservice.dto.Review;
 import com.example.microservices.watchlistservice.entity.MovieWatchListConnection;
 import com.example.microservices.watchlistservice.entity.Role;
 import com.example.microservices.watchlistservice.entity.User;
@@ -16,7 +17,10 @@ import static com.example.microservices.watchlistservice.utils.StringConverter.*
 import com.example.microservices.watchlistservice.utils.watchlist.ValidWatchlistName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
@@ -79,7 +83,7 @@ public class WatchListService implements WatchListServiceInterface{
 
     @Override
     public Movie findMovieById(int id) {
-        return stringToMovie(webClientMovie.get().uri("/list/{id}", id).retrieve().bodyToMono(String.class).block());
+        return stringToMovie(webClientMovie.get().uri("/list/id/{id}", id).retrieve().bodyToMono(String.class).block());
     }
 
     @Override
@@ -119,8 +123,8 @@ public class WatchListService implements WatchListServiceInterface{
     }
 
     @Override
-    public void addCommentToMovie(int id, String comment) {
-        webClientMovie.post().uri("/addReview/{id}", id).bodyValue(stringToCommentString(comment));
+    public void addCommentToMovie(int id, Review comment) {
+        webClientMovie.post().uri("/addReview/{id}", id).bodyValue(reviewToCommentString(comment)).retrieve().bodyToMono(String.class).block();
     }
 
     @Override
@@ -139,8 +143,8 @@ public class WatchListService implements WatchListServiceInterface{
         List<MovieWatchListConnection> connections = movieWatchListConnectionRepository.findAll();
         List<Movie> movieList = new ArrayList<>();
         for (MovieWatchListConnection con: connections) {
-            if (con.getMovieId() == id){
-                movieList.add(findMovieById(id));
+            if (con.getWatchListId() == id){
+                movieList.add(findMovieById(con.getMovieId()));
             }
         }
         return movieList;
@@ -207,7 +211,7 @@ public class WatchListService implements WatchListServiceInterface{
 
     @Override
     public void addMovieToWatchList(MovieWatchListConnection connection) {
-        System.out.println("addMovieToWatchList wird aufgerufen im Service");
+        connection.setId(0);
         movieWatchListConnectionRepository.save(connection);
     }
 

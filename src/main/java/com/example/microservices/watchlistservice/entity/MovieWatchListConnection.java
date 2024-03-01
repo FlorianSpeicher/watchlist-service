@@ -3,12 +3,13 @@ package com.example.microservices.watchlistservice.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "movie-watchlist")
+@Table(name = "movie_watchlist")
 public class MovieWatchListConnection {
-
     @Id
-    @GeneratedValue
-    @JoinColumn(name = "id", columnDefinition = "watchlist_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "watchlist_id")
     private int watchListId;
 
     @Column(name = "movie_id")
@@ -30,6 +31,13 @@ public class MovieWatchListConnection {
         this.movieId = movieId;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public MovieWatchListConnection(int watchListId, int movieId) {
         this.watchListId = watchListId;
