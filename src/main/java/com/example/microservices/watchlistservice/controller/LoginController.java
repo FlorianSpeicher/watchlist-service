@@ -6,6 +6,8 @@ import com.example.microservices.watchlistservice.entity.User;
 import com.example.microservices.watchlistservice.entity.WatchList;
 import com.example.microservices.watchlistservice.service.EntityService;
 import com.example.microservices.watchlistservice.service.WatchListService;
+import com.example.microservices.watchlistservice.utils.password.ValidPassword;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +28,8 @@ import java.util.List;
 public class LoginController extends BaseController implements LoginControllerInterface{
 
     private final WatchListService watchListService;
+
+    @Autowired
     private final EntityService entityService;
     private WatchListController watchListController;
     @Autowired
@@ -46,7 +50,7 @@ public class LoginController extends BaseController implements LoginControllerIn
     }
 
     @RequestMapping(value="/addNewUser/redirect", method = RequestMethod.POST)
-    public ModelAndView addNewUserRedirect(@ModelAttribute User user, BindingResult bindingResult){
+    public ModelAndView addNewUserRedirect(@ModelAttribute @Valid User user, BindingResult bindingResult){
         ModelAndView modelAndView = new ModelAndView("redirect:/login");
         User newUser = new User();
         newUser.setFirstName(user.getFirstName());
@@ -57,6 +61,10 @@ public class LoginController extends BaseController implements LoginControllerIn
         newUser.setEmail(user.getEmail());
         newUser.setActive(1);
         newUser.setToken("0");
+        if (bindingResult.hasErrors()){
+            modelAndView.setViewName("login/registration");
+            return modelAndView;
+        }
         watchListService.saveUser(newUser);
         return modelAndView;
     }

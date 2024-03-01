@@ -7,6 +7,7 @@ import com.example.microservices.watchlistservice.utils.watchlist.ValidWatchlist
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
@@ -23,38 +24,30 @@ public class User {
     private int id;
 
     @Column(name = "first_name")
-    @NotEmpty(message = "Firstname cannot be empty")
-    //@NotNull
+    @NotBlank(message = "First name cannot be empty")
     private String firstName;
 
     @Column(name = "last_name")
-    @NotEmpty(message = "Lastname cannot be empty")
-   //@NotNull
+    @NotBlank(message = "Last name can not be empty")
     private String lastName;
 
     @Column(name = "user_name")
-    @NotEmpty(message = "Username cannot be empty")
-    @NotNull
-    @ValidUserName
+    @NotBlank(message = "User name can not be empty")
+    @ValidUserName(message = "This user name is already in use")
     private String userName;
 
     @Column(name = "password")
-    @NotEmpty(message = "Username cannot be empty")
-    @NotNull
-    //@ValidPassword
+    @NotBlank(message = "Password can not be empty")
+    @ValidPassword(message = "The password must be in an other format")
     private String password;
 
     @Column(name = "age")
-    @NotEmpty(message = "Age cannot be empty")
-    //@NotNull
-    @Min(value = 0, message = "Age cannot be negative")
-    @Max(value = 150, message = "You cannot be older than 150")
+    @Range(min = 0, max = 150, message = "Age must be between 0 and 150")
     private int age;
 
     @Column(name = "email")
     @NotEmpty(message = "Email cannot be empty")
-    //@NotNull
-    @Email
+    @Email(message = "Incorrect email type")
     private String email;
 
     @Column(name = "token")
@@ -168,7 +161,7 @@ public class User {
     }
 
     public User(){
-        this("unknown", "unknown", "unknown", "0000", 0, "unknown@unknown.com", null , new Role());
+        this("", "", "", "", 0, "", null , new Role());
     }
 
 }

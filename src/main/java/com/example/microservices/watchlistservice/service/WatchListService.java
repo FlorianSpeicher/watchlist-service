@@ -33,6 +33,7 @@ import java.util.Optional;
 public class WatchListService implements WatchListServiceInterface{
 
 
+
     private final UserRepository userRepository;
     private final WatchListRepository watchListRepository;
     private final RoleRepository roleRepository;

@@ -38,18 +38,34 @@
             </div>
 
             <input type="hidden" th:field="*{id}"/>
+
             <input type="text" th:field="*{firstName}"
-                    class="form-control mb-4 w-25" placeholder="First name">
+                       class="form-control mb-4 w-25" placeholder="First name">
+            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name Error</p>
+
             <input type="text" th:field="*{lastName}"
                    class="form-control mb-4 w-25" placeholder="Last name">
+            <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">First name Error</p>
+
+
             <input type="text" th:field="*{userName}"
                    class="form-control mb-4 w-25" placeholder="User name">
-            <input type="text" th:field="*{age}"
+            <p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">First name Error</p>
+
+
+            <input type="number" th:field="*{age}"
                    class="form-control mb-4 w-25" placeholder="Age">
-            <input type="text" th:field="*{email}"
+            <p th:if="${#fields.hasErrors('age')}" th:errors="*{age}">First name Error</p>
+
+
+            <input type="email" th:field="*{email}"
                    class="form-control mb-4 w-25" placeholder="Email">
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">First name Error</p>
+
+
             <input type="password" th:field="*{password}"
                    class="form-control mb-4 w-25" placeholder="Password">
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">First name Error</p>
 
             <button type="submit" class="btn btn-info col-2">Save</button>
         </form>
