@@ -6,32 +6,38 @@ import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.sql.ClientInfoStatus;
 import java.util.ArrayList;
 
 @Component
+@Configurable
 public class UserNameConstraintValidator implements ConstraintValidator<ValidUserName, String> {
 
-    @Autowired
-    private EntityService entityService;
+
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
     public void initialize(ValidUserName arg0) {
+
     }
 
     @Override
     public boolean isValid(String userName, ConstraintValidatorContext context) {
-        boolean list = userRepository.existsByuserName(userName);
-        System.out.println(list);
-        if (userRepository == null){
+        try {
+            if (userRepository.findByUserName(userName) == null){
+                return true;
+            } else {
+                return false;
+            }
+        }catch (NullPointerException e){
             return true;
         }
-        System.out.println("Nach if");
-        return userName != null && !userRepository.existsByuserName(userName);
     }
 }
