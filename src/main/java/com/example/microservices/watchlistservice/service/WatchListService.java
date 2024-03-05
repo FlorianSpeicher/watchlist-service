@@ -49,8 +49,8 @@ public class WatchListService implements WatchListServiceInterface{
         this.watchListRepository = watchListRepository;
         this.roleRepository = roleRepository;
         this.movieWatchListConnectionRepository = movieWatchListConnectionRepository;
-        this.webClientMovie = webClientBuilderMovie.baseUrl("http://localhost:3307/movies").build();
-        this.webClientAuth = webClientBuilderAuth.baseUrl("http://localhost:3308/auth/token").build();
+        this.webClientMovie = webClientBuilderMovie.baseUrl("http://movie-service:3307/movies").build();
+        this.webClientAuth = webClientBuilderAuth.baseUrl("http://auth-service:3308/auth/token").build();
     }
 
     @Override
