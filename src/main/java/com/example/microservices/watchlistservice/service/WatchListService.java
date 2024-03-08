@@ -12,22 +12,21 @@ import com.example.microservices.watchlistservice.repositories.MovieWatchListCon
 import com.example.microservices.watchlistservice.repositories.RoleRepository;
 import com.example.microservices.watchlistservice.repositories.UserRepository;
 import com.example.microservices.watchlistservice.repositories.WatchListRepository;
-import static com.example.microservices.watchlistservice.utils.StringConverter.*;
-
 import com.example.microservices.watchlistservice.utils.watchlist.ValidWatchlistName;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserter;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static com.example.microservices.watchlistservice.utils.StringConverter.*;
 
 @Service
 public class WatchListService implements WatchListServiceInterface{
@@ -49,12 +48,13 @@ public class WatchListService implements WatchListServiceInterface{
         this.watchListRepository = watchListRepository;
         this.roleRepository = roleRepository;
         this.movieWatchListConnectionRepository = movieWatchListConnectionRepository;
-        this.webClientMovie = webClientBuilderMovie.baseUrl("http://movie-service:3307/movies").build();
-        this.webClientAuth = webClientBuilderAuth.baseUrl("http://auth-service:3308/auth/token").build();
+        this.webClientMovie = webClientBuilderMovie.baseUrl(UriComponentsBuilder.newInstance().scheme("http").host(System.getenv("MOVIE_ADDRESS")).port(3307).path("/movies").build().toString()).build();
+        this.webClientAuth = webClientBuilderAuth.baseUrl(UriComponentsBuilder.newInstance().scheme("http").host(System.getenv("AUTH_ADDRESS")).port(3308).path("/auth/token").build().toString()).build();
     }
 
     @Override
     public String generateToken() {
+
         return webClientAuth.get().uri("/generate").retrieve().bodyToMono(String.class).block();
     }
 
